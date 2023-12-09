@@ -1,0 +1,47 @@
+{
+  "name": "lingua-tune",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@aws-sdk/client-polly": "^3.465.0",
+    "@aws-sdk/client-s3": "^3.461.0",
+    "@aws-sdk/client-transcribe": "^3.462.0",
+    "@aws-sdk/client-translate": "^3.465.0",
+    "@ffmpeg/ffmpeg": "^0.12.7",
+    "@ffmpeg/util": "^0.12.1",
+    "@fontsource/roboto": "^5.0.8",
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@next/font": "^14.0.3",
+    "aws-crt": "^1.19.0",
+    "aws-sdk": "^2.1510.0",
+    "axios": "^1.6.2",
+    "framer-motion": "^10.16.5",
+    "fs": "^0.0.1-security",
+    "lottie-react": "^2.4.0",
+    "motion": "^10.16.4",
+    "natural": "^6.10.2",
+    "next": "14.0.3",
+    "nlp": "^0.0.0",
+    "node-nlp": "^4.27.0",
+    "react": "^18.2.0",
+    "react-dom": "^18",
+    "stream": "^0.0.2",
+    "uniqid": "^5.4.0",
+    "utils": "^0.3.1"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.0.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.0.3",
+    "postcss": "^8.4.31",
+    "postcss-preset-env": "^9.3.0",
+    "tailwindcss": "^3.3.0"
+  }
+}

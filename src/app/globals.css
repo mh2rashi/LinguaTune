@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+.scroll {
+    margin: 0 2em;
+}
+
+.TopToBottom {
+    animation: TopToBottom 500s infinite linear;
+}
+
+@keyframes TopToBottom {
+    from {
+        transform: translateY(-100%);
+    }
+
+    to {
+        transform: translateY(0%);
+    }
+}
+
+.scroll p {
+    font-size: 2em;
+    color: white;
+    font-weight: bold;
+    margin-bottom: 0;
+    line-height: 10px;
+}

@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\public",
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\api",
+    "\\src\\app\\api\\transcribe",
+    "\\src\\app\\api\\upload",
+    "\\src\\app\\aws",
+    "\\src\\app\\aws\\transcriptionHelpers",
+    "\\src\\app\\[filename]"
+  ],
+  "SelectedNode": "\\src\\app\\api\\transcribe\\route.js",
+  "PreviewInSolutionExplorer": false
+}
