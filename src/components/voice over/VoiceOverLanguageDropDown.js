@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-const VoiceDropdownButton = ({ onSelectLanguageCode, onSelectVoice }) => {
+const VoiceOverLanguageDropDown = ({ onSelectLanguageCode, onSelectVoice }) => {
     const [isOpenLanguage, setIsOpenLanguage] = useState(false);
     const [isOpenGender, setIsOpenGender] = useState(false);
     const [isOpenVoice, setIsOpenVoice] = useState(false);
@@ -197,4 +197,4 @@ const VoiceDropdownButton = ({ onSelectLanguageCode, onSelectVoice }) => {
     );
 };
 
-export default VoiceDropdownButton;
+export default VoiceOverLanguageDropDown;

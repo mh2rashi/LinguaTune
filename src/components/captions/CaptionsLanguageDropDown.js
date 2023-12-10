@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-const DropdownButton = ({ onSelectLanguage }) => {
+const CaptionsLanguageDropDown = ({ selectedLanguageCode }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState("English");
     const dropdownRef = useRef(null);
@@ -325,7 +325,7 @@ const DropdownButton = ({ onSelectLanguage }) => {
     const handleOptionClick = (language) => {
         setSelectedOption(language.LanguageName);
         setIsOpen(false);
-        onSelectLanguage(language.LanguageCode);
+        selectedLanguageCode(language.LanguageCode);
     };
 
     return (
@@ -360,4 +360,4 @@ const DropdownButton = ({ onSelectLanguage }) => {
     );
 };
 
-export default DropdownButton;
+export default CaptionsLanguageDropDown;
