@@ -4,14 +4,13 @@ import React, { useEffect, useState } from "react";
 
 import cleanTranscriptionItems from "../aws/transcriptionHelpers/cleanTranscriptionItems"
 
-import { PollyClient, StartSpeechSynthesisTaskCommand } from "@aws-sdk/client-polly";
 
 import CaptionsTranscriptionEditor from "../../components/captions/CaptionsTranscriptionEditor"
 import CaptionsOutputVideo from "../../components/captions/CaptionsOutputVideo"
 import CaptionsOptions from "../../components/captions/CaptionsOptions"
 
 
-
+import VoiceOverOptions from "../../components/voice over/VoiceOverOptions"
 
 import ToggleButton from "../../components/ToggleButton"
 
@@ -26,19 +25,22 @@ export default function FilePage({ params }) {
 
     const [activeButton, setActiveButton] = useState('captions');
 
-    // This is for the Captions
+    
     const [originalTranscriptionItems, setOriginalTranscriptionItems] = useState([])
     const [originalTranscription, setOriginalTranscription] = useState(null);
-    const [currentTranscriptionItems, setCurrentTranscriptionItems] = useState([]);
-    const [currentTranscription, setCurrentTranscription] = useState(null);
 
-    const [languageCode, setLanguageCode] = useState(null);
-    const [Voice, setVoice] = useState(null);
+    // Variables for Captions transcription
+    const [currentTranscriptionItemsCaptions, setCurrentTranscriptionItemsCaptions] = useState([]);
+    const [currentTranscriptionCaptions, setCurrentTranscriptionCaptions] = useState(null);
+
+    // Variables for VoiceOver transcription
+    const [currentTranscriptionItemsVoiceOver, setCurrentTranscriptionItemsVoiceOver] = useState([]);
+    const [currentTranscriptionVoiceOver, setCurrentTranscriptionVoiceOver] = useState(null);
+
 
     useEffect(() => {
 
         getTranscription();
-
 
     }, [filename])
 
@@ -61,11 +63,17 @@ export default function FilePage({ params }) {
             } else {
                 setIsTranscribing(false);
 
-                setCurrentTranscriptionItems(cleanTranscriptionItems(transcription.results.items));
+                // Original Transcription
+                setOriginalTranscription(transcription.results.transcripts[0].transcript);
                 setOriginalTranscriptionItems(cleanTranscriptionItems(transcription.results.items));
 
-                setCurrentTranscription(transcription.results.transcripts[0].transcript);
-                setOriginalTranscription(transcription.results.transcripts[0].transcript);
+                // Captions Transcription
+                setCurrentTranscriptionCaptions(transcription.results.transcripts[0].transcript);
+                setCurrentTranscriptionItemsCaptions(cleanTranscriptionItems(transcription.results.items));
+
+                // VoiceOver Transcription
+                setCurrentTranscriptionVoiceOver(transcription.results.transcripts[0].transcript);
+                setCurrentTranscriptionItemsVoiceOver(cleanTranscriptionItems(transcription.results.items));
 
             }
 
@@ -75,56 +83,32 @@ export default function FilePage({ params }) {
         }
     }
 
-    // Get Voice Over
-    async function getVoiceOver(languageCode, Voice) {
-        const client = new PollyClient({
-            region: "us-east-2",
-            credentials: {
-                accessKeyId: "AKIAZSN4PXGW7UO5YVIY",
-                secretAccessKey: "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",
-            },
-        });
+    // Functions for ToggleButton
+    const updateToggleButton = (newButton) => {
+        setActiveButton(newButton);
+        console.log(newButton);
 
-        const input = {
-            Engine: "standard",
-            LanguageCode: languageCode,
-            OutputFormat: "mp3",
-            OutputS3BucketName: "transalte-transcribe", // Replace with your bucket name
-            OutputS3KeyPrefix: "", // Replace with your desired key prefix
-            TextType: "text",
-            Text: 'Hello, my name is Mirrat. I\'m 25 years old. I would like to work at the Toronto District.',
-            VoiceId: Voice,
-        };
-
-        try {
-            const command = new StartSpeechSynthesisTaskCommand(input);
-            const response = await client.send(command);
-
-            console.log("Task submitted successfully!");
-            console.log("Task ID:", response.SynthesisTask?.TaskId);
-        } catch (error) {
-            console.error("Error submitting synthesis task:", error);
-        }
-    }
-
-            
-
-
-    
-
-    /* Functions to handle changes with component values */
-
-    const handleLanguageSelect = (onSelectLanguageCode) => {
-        setLanguageCode(onSelectLanguageCode);
     };
 
-    const handleVoiceSelect = () => {
-        setVoice(onSelectVoice);
+    // Functions for Captions Options
+    const updateCurrentTranscriptionItemsCaptions = (newItems) => {
+        setCurrentTranscriptionItemsCaptions(newItems);
+    };
+
+    const updateCurrentTranscriptionCaptions = (newItems) => {
+        setCurrentTranscriptionCaptions(newItems);
+    };
+
+    // Functions for VoiceOver Options
+    const updateCurrentTranscriptionItemsVoiceOver = (newItems) => {
+        setCurrentTranscriptionItemsVoiceOver(newItems);
+    };
+
+    const updateCurrentTranscriptionVoiceOver = (newItems) => {
+        setCurrentTranscriptionVoiceOver(newItems);
     };
 
     
-
-   
     /* Helper functions to render TranscriptionItems */
 
     if (isTranscribing) {
@@ -147,23 +131,6 @@ export default function FilePage({ params }) {
 
     }
 
-    // Functions from CaptionsOptions
-    const updateCurrentTranscriptionItems = (newItems) => {
-        setCurrentTranscriptionItems(newItems);
-    };
-
-    const updateCurrentTranscription = (newItems) => {
-        setCurrentTranscription(newItems);
-    };
-
-
-    // Functions from ToggleButton
-    const updateToggleButton = (newButton) => {
-        setActiveButton(newButton);
-        console.log(newButton);
-       
-    };
-
 
 
     return (
@@ -176,70 +143,34 @@ export default function FilePage({ params }) {
 
                     <ToggleButton activeButton={activeButton} updateToggleButton={updateToggleButton} />
 
-                    {activeButton == 'captions'?
+                    {activeButton == 'captions' ?
                         <CaptionsOptions
                             originalTranscription={originalTranscription}
                             originalTranscriptionItems={originalTranscriptionItems}
-                            currentTranscriptionItems={currentTranscriptionItems}
-                            updateCurrentTranscriptionItems={updateCurrentTranscriptionItems}
-                            updateCurrentTranscription={updateCurrentTranscription}
+                            currentTranscriptionItemsCaptions={currentTranscriptionItemsCaptions}
+                            updateCurrentTranscriptionItemsCaptions={updateCurrentTranscriptionItemsCaptions}
+                            updateCurrentTranscriptionCaptions={updateCurrentTranscriptionCaptions}
                         /> :
-                        <
-
+                        <VoiceOverOptions
+                            originalTranscription={originalTranscription}
+                            originalTranscriptionItems={originalTranscriptionItems}
+                            currentTranscriptionVoiceOver={currentTranscriptionVoiceOver}
+                            currentTranscriptionItemsVoiceOver={currentTranscriptionItemsVoiceOver}
+                            updateCurrentTranscriptionItemsVoiceOver={updateCurrentTranscriptionItemsVoiceOver}
+                            updateCurrentTranscriptionVoiceOver={updateCurrentTranscriptionVoiceOver}
+                        />
+                    }
                 </div>
 
                 <CaptionsOutputVideo videoSource={"https://transalte-transcribe.s3.amazonaws.com/" + filename} />
 
             </div>
 
-            <CaptionsTranscriptionEditor transcriptionItems={currentTranscriptionItems} />
+            <CaptionsTranscriptionEditor transcriptionItems={currentTranscriptionItemsCaptions} />
             
         </div>
 
     );
 
 }
-
-
-
-   
- //async function VocalizeText() {
-
- //       const client = new PollyClient({
- //           region: 'us-east-2',
- //           credentials: {
- //               accessKeyId: process.env.AWS_ACCESS_KEY,
- //               secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
- //           },
- //       });
-
- //        const input = { // DescribeVoicesInput
- //            Engine: "standard",
- //        };
-         
-
-
- //       //const input = {
- //       //    "LexiconNames": [
- //       //        "example"
- //       //    ],
- //       //    "OutputFormat": "mp3",
- //       //    "SampleRate": "8000",
- //       //    "Text": "All Gaul is divided into three parts",
- //       //    "TextType": "text",
- //       //    "VoiceId": "Joanna"
- //       //};
-
-
- //       try {
- //           //const command = new SynthesizeSpeechCommand(input);
- //           //const response = await client.send(command);
- //           const command = new DescribeVoicesCommand(input);
- //           const response = await client.send(command);
- //           console.log(response);
- //       } catch (error) {
- //           console.error('Error translating text:', error);
- //           throw error;
- //       }
- //   }
 

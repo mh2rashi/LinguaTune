@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-const VoiceOverLanguageDropDown = ({ onSelectLanguageCode, onSelectVoice }) => {
+const VoiceOverLanguageDropDown = ({ selectedLanguageCode, selectedVoiceOver }) => {
     const [isOpenLanguage, setIsOpenLanguage] = useState(false);
     const [isOpenGender, setIsOpenGender] = useState(false);
     const [isOpenVoice, setIsOpenVoice] = useState(false);
 
     const [selectedLanguage, setSelectedLanguage] = useState("US English");
-    const [selectedGender, setSelectedGender] = useState("Female");
-    const [selectedVoice, setSelectedVoice] = useState("Salli");
+    const [selectedGender, setSelectedGender] = useState("Male");
+    const [selectedVoice, setSelectedVoice] = useState("Justin");
 
     const dropdownRef = useRef(null);
 
@@ -17,23 +17,61 @@ const VoiceOverLanguageDropDown = ({ onSelectLanguageCode, onSelectVoice }) => {
         "Japanese", "Italian", "Icelandic", "French", "Canadian French",
         "US Spanish", "Mexican Spanish", "Castilian Spanish", "Welsh English",
         "US English", "Indian English", "British English", "Australian English",
-        "German", "Danish", "Welsh", "Chinese Mandarin", "Arabic"
+        "German"
     ];
 
     const LanguageGenders = {
+        "Turkish": ["Female"],
+        "Swedish": ["Female"],
+        "Russian": ["Male", "Female"],
+        "Romanian": ["Female"],
+        "Portuguese": ["Male", "Female"],
+        "Brazilian Portuguese": ["Male", "Female"],
+        "Polish": ["Male", "Female"],
+        "Dutch": ["Male", "Female"],
+        "Norwegian": ["Female"],
+        "Korean": ["Female"],
+        "Japanese": ["Male", "Female"],
+        "Italian": ["Male", "Female"],
+        "Icelandic": ["Male", "Female"],
+        "French": ["Male", "Female"],
+        "Canadian French": ["Female"],
+        "US Spanish": ["Male", "Female"],
+        "Mexican Spanish": ["Female"],
+        "Castilian Spanish": ["Male", "Female"],
+        "Welsh English": ["Male"],
         "US English": ["Male", "Female"],
-    }
-
-    const LanguageVoices = {
-        "US English": {
-            "Male": ["Matthew", "Justin", "Joey"],
-            "Female": ["Salli", "Kimberly", "Kendra", "Joanna", "Ivy", "Raveena"]
-        },
-        
+        "Indian English": ["Female"],
+        "British English": ["Male", "Female"],
+        "Australian English": ["Male", "Female"],
+        "German": ["Male", "Female"],
     };
 
-    const LanguageCode = {
-        "US English": "en-US",
+    const languageCodes = {
+        "Turkish": "tr",
+        "Swedish": "sv",
+        "Russian": "ru",
+        "Romanian": "ro",
+        "Portuguese": "pt",
+        "Brazilian Portuguese": "pt-BR",
+        "Polish": "pl",
+        "Dutch": "nl",
+        "Norwegian": "no",
+        "Korean": "ko",
+        "Japanese": "ja",
+        "Italian": "it",
+        "Icelandic": "is",
+        "French": "fr",
+        "Canadian French": "fr-CA",
+        "US Spanish": "es",
+        "Mexican Spanish": "es",
+        "Castilian Spanish": "es",
+        "Welsh English": "en",
+        "US English": "en",
+        "Indian English": "en",
+        "British English": "en",
+        "Australian English": "en",
+        "German": "de"
     };
 
     useEffect(() => {
@@ -52,6 +90,7 @@ const VoiceOverLanguageDropDown = ({ onSelectLanguageCode, onSelectVoice }) => {
         };
     }, [dropdownRef]);
 
+
     const handleLanguageClick = (language) => {
 
         // Set selected language
@@ -69,6 +108,9 @@ const VoiceOverLanguageDropDown = ({ onSelectLanguageCode, onSelectVoice }) => {
         // Outputs
         onSelectLanguageCode(LanguageCode[language]);
         onSelectVoice(LanguageVoices[language][selectedGender][0]);
+
+        selectedLanguageCode(languageCodes[language]);
+        selectedVoiceOver(LanguageVoices[language][selectedGender][0])
     };
 
     const handleGenderClick = (gender) => {
@@ -85,8 +127,8 @@ const VoiceOverLanguageDropDown = ({ onSelectLanguageCode, onSelectVoice }) => {
         setSelectedVoice(LanguageVoices[selectedLanguage][gender][0]);
 
         // Outputs
-        onSelectLanguageCode(LanguageCode[selectedLanguage]);
-        onSelectVoice(LanguageVoices[selectedLanguage][gender][0]);
+        selectedLanguageCode(LanguageCode[selectedLanguage]);
+        selectedVoiceOver(LanguageVoices[selectedLanguage][gender][0]);
     };
 
     const handleVoiceClick = (voice) => {
@@ -100,9 +142,10 @@ const VoiceOverLanguageDropDown = ({ onSelectLanguageCode, onSelectVoice }) => {
         setIsOpenVoice(false);
 
         // Outputs
-        onSelectLanguageCode(LanguageCode[selectedLanguage]);
-        onSelectVoice(voice);
+        selectedLanguageCode(LanguageCode[selectedLanguage]);
+        selectedVoiceOver(voice);
     };
+    
 
     return (
         <div ref={dropdownRef} className="relative mt-3">

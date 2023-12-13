@@ -7,7 +7,7 @@ import CaptionIcon from "../assets/captionIcon";
 
 import UpdateTranscriptionItems from "../../app/aws/transcriptionHelpers/updateTranscriptionItems"
 
-const CaptionsOptions = ({ originalTranscription, originalTranscriptionItems, currentTranscriptionItems, updateCurrentTranscriptionItems, updateCurrentTranscription }) => {
+const CaptionsOptions = ({ originalTranscription, originalTranscriptionItems, currentTranscriptionItemsCaptions, updateCurrentTranscriptionItemsCaptions, updateCurrentTranscriptionCaptions}) => {
     
 
     // Call updateTranscription with the selected language code
@@ -39,10 +39,10 @@ const CaptionsOptions = ({ originalTranscription, originalTranscriptionItems, cu
             const response = await translateClient.send(command);
 
             // Update Current Transcription
-            updateCurrentTranscription(response.TranslatedText);
+            updateCurrentTranscriptionCaptions(response.TranslatedText);
 
             //Update AWS TranscriptionItems
-            updateCurrentTranscriptionItems(UpdateTranscriptionItems(response.TranslatedText, originalTranscriptionItems, languageCode));
+            updateCurrentTranscriptionItemsCaptions(UpdateTranscriptionItems(response.TranslatedText, originalTranscriptionItems, languageCode));
 
         } catch (error) {
             console.error('Error translating text:', error);
@@ -52,7 +52,8 @@ const CaptionsOptions = ({ originalTranscription, originalTranscriptionItems, cu
 
     // Update Trascription Edit
     const updateTranscriptionEdit = () => {
-        const updatedTranscriptionItems = [...currentTranscriptionItems];
+
+        const updatedTranscriptionItems = [...currentTranscriptionItemsCaptions];
 
         updatedTranscriptionItems.forEach((item, key) => {
             const container = document.getElementById(key);
@@ -78,7 +79,7 @@ const CaptionsOptions = ({ originalTranscription, originalTranscriptionItems, cu
         });
 
         // Use the callback function to update the state in the parent component
-        updateCurrentTranscriptionItems(updatedTranscriptionItems);
+        updateCurrentTranscriptionItemsCaptions(updatedTranscriptionItems);
 
         console.log('Values:', updatedTranscriptionItems);
     };
