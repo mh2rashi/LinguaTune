@@ -13,55 +13,6 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
 
-    const languages = [
-        "English",
-        "Español",
-        "中文",
-        "हिन्दी",
-        "العربية",
-        "Português",
-        "বাংলা",
-        "Русский",
-        "日本語",
-        "Pусский",
-        "Deutsch",
-        "ꦧꦱꦗꦮ",
-        "한국어",
-        "فارسی",
-        "Français",
-        "Italiano",
-        "తెలుగు",
-        "Tiếng",
-        "मराठी",
-        "தமிழ்",
-        "ترکمن",
-        "اردو",
-        "Bahasa",
-        "Türkçe",
-        "ગુજરાતી",
-        "Polski",
-        "ไทย",
-        "Nederlands",
-        "Magyar",
-        "ਪੰਜਾਬੀ",
-        "Yoruba èdè Yorùbá",
-        "नेपाली",
-        "Română",
-        "မြန်မာစာ",
-        "Հայերեն ",
-        "Bisaya",
-        "Svenska",
-        "Norsk",
-        "Ελληνικά Ellīniká",
-        "Čeština",
-        "Romani",
-        "မြန်မာစာ Myanma Zawgyi",
-        "Kiswahili",
-        "עברית Ivrit",
-        "Akan",
-     
-    ];
-
 
   return (
       <html lang="en" className={inter.className}>

@@ -15,7 +15,6 @@ import VoiceOverOptions from "../../components/voice over/VoiceOverOptions"
 import ToggleButton from "../../components/ToggleButton"
 
 
-
 export default function FilePage({ params }) {
 
     const filename = params.filename;
@@ -32,6 +31,9 @@ export default function FilePage({ params }) {
     // Variables for Captions transcription
     const [currentTranscriptionItemsCaptions, setCurrentTranscriptionItemsCaptions] = useState([]);
     const [currentTranscriptionCaptions, setCurrentTranscriptionCaptions] = useState(null);
+    const [isButtonClicked, setButtonClicked] = useState(false);
+    const [primaryColor, setPrimaryColor] = useState(null);
+    const [outlineColor, setOutlineColor] = useState(null);
 
     // Variables for VoiceOver transcription
     const [currentTranscriptionItemsVoiceOver, setCurrentTranscriptionItemsVoiceOver] = useState([]);
@@ -95,9 +97,22 @@ export default function FilePage({ params }) {
         setCurrentTranscriptionItemsCaptions(newItems);
     };
 
-    const updateCurrentTranscriptionCaptions = (newItems) => {
-        setCurrentTranscriptionCaptions(newItems);
+    const updateButtonClicked = (boolean) => {
+        setButtonClicked(boolean);
+        console.log('Button Clicked')
     };
+
+    const updatePrimaryColor = (color) => {
+        setPrimaryColor(color);
+        console.log(color)
+    };
+
+    const updateOutlineColor = (color) => {
+        setOutlineColor(color);
+        console.log(color);
+    };
+
+   
 
     // Functions for VoiceOver Options
     const updateCurrentTranscriptionItemsVoiceOver = (newItems) => {
@@ -107,6 +122,8 @@ export default function FilePage({ params }) {
     const updateCurrentTranscriptionVoiceOver = (newItems) => {
         setCurrentTranscriptionVoiceOver(newItems);
     };
+
+    
 
     
     /* Helper functions to render TranscriptionItems */
@@ -145,24 +162,33 @@ export default function FilePage({ params }) {
 
                     {activeButton == 'captions' ?
                         <CaptionsOptions
-                            originalTranscription={originalTranscription}
                             originalTranscriptionItems={originalTranscriptionItems}
                             currentTranscriptionItemsCaptions={currentTranscriptionItemsCaptions}
                             updateCurrentTranscriptionItemsCaptions={updateCurrentTranscriptionItemsCaptions}
-                            updateCurrentTranscriptionCaptions={updateCurrentTranscriptionCaptions}
+                            updateButtonClicked={updateButtonClicked}
+                            updatePrimaryColor={updatePrimaryColor}
+                            updateOutlineColor={updateOutlineColor}
                         /> :
-                        <VoiceOverOptions
-                            originalTranscription={originalTranscription}
+                        <CaptionsOptions
                             originalTranscriptionItems={originalTranscriptionItems}
-                            currentTranscriptionVoiceOver={currentTranscriptionVoiceOver}
-                            currentTranscriptionItemsVoiceOver={currentTranscriptionItemsVoiceOver}
-                            updateCurrentTranscriptionItemsVoiceOver={updateCurrentTranscriptionItemsVoiceOver}
-                            updateCurrentTranscriptionVoiceOver={updateCurrentTranscriptionVoiceOver}
+                            currentTranscriptionItemsCaptions={currentTranscriptionItemsCaptions}
+                            updateCurrentTranscriptionItemsCaptions={updateCurrentTranscriptionItemsCaptions}
+                            updateButtonClicked={updateButtonClicked}
+                            updatePrimaryColor={updatePrimaryColor}
+                            updateOutlineColor={updateOutlineColor}
                         />
+                        //<VoiceOverOptions
+                        //    originalTranscription={originalTranscription}
+                        //    originalTranscriptionItems={originalTranscriptionItems}
+                        //    currentTranscriptionVoiceOver={currentTranscriptionVoiceOver}
+                        //    currentTranscriptionItemsVoiceOver={currentTranscriptionItemsVoiceOver}
+                        //    updateCurrentTranscriptionItemsVoiceOver={updateCurrentTranscriptionItemsVoiceOver}
+                        //    updateCurrentTranscriptionVoiceOver={updateCurrentTranscriptionVoiceOver}
+                        ///>
                     }
                 </div>
 
-                <CaptionsOutputVideo videoSource={"https://transalte-transcribe.s3.amazonaws.com/" + filename} />
+                <CaptionsOutputVideo filename={filename} transcriptionItems={currentTranscriptionItemsCaptions} primaryColor={primaryColor} outlineColor={outlineColor} isButtonClicked={isButtonClicked} />
 
             </div>
 

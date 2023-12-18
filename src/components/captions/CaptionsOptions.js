@@ -5,10 +5,12 @@ import { TranslateClient, TranslateTextCommand } from "@aws-sdk/client-translate
 import CaptionsLanguageDropDown from "../captions/CaptionsLanguageDropDown";
 import CaptionIcon from "../assets/captionIcon";
 
-import UpdateTranscriptionItems from "../../app/aws/transcriptionHelpers/updateTranscriptionItems"
 
-const CaptionsOptions = ({ originalTranscription, originalTranscriptionItems, currentTranscriptionItemsCaptions, updateCurrentTranscriptionItemsCaptions, updateCurrentTranscriptionCaptions}) => {
-    
+
+const CaptionsOptions = ({ originalTranscriptionItems, currentTranscriptionItemsCaptions, updateCurrentTranscriptionItemsCaptions, updateButtonClicked, updatePrimaryColor, updateOutlineColor }) => {
+
+    const [primaryColor, setPrimaryColor] = useState('#FFFFFF');
+    const [outlineColor, setOutlineColor] = useState('#000000');
 
     // Call updateTranscription with the selected language code
     const handleLanguageSelect = (selectedLanguageCode) => {
@@ -17,9 +19,9 @@ const CaptionsOptions = ({ originalTranscription, originalTranscriptionItems, cu
     };
 
 
+
     // Change Transcription Language
     async function changeTranscriptionLanguage(languageCode) {
-
         const translateClient = new TranslateClient({
             region: 'us-east-2',
             credentials: {
@@ -28,29 +30,49 @@ const CaptionsOptions = ({ originalTranscription, originalTranscriptionItems, cu
             },
         });
 
-        const params = {
-            SourceLanguageCode: 'auto', // Auto-detect source language
-            TargetLanguageCode: languageCode,
-            Text: originalTranscription,
-        };
-
         try {
-            const command = new TranslateTextCommand(params);
-            const response = await translateClient.send(command);
+            const translatedItems = await Promise.all(
+                originalTranscriptionItems.map(async (item) => {
+                    const params = {
+                        SourceLanguageCode: 'auto', // Auto-detect source language
+                        TargetLanguageCode: languageCode,
+                        Text: item.content,
+                    };
 
-            // Update Current Transcription
-            updateCurrentTranscriptionCaptions(response.TranslatedText);
+                    try {
+                        const command = new TranslateTextCommand(params);
+                        const response = await translateClient.send(command);
 
-            //Update AWS TranscriptionItems
-            updateCurrentTranscriptionItemsCaptions(UpdateTranscriptionItems(response.TranslatedText, originalTranscriptionItems, languageCode));
+                        return response.TranslatedText;
+                    } catch (error) {
+                        console.error('Error translating text:', error);
+                        throw error;
+                    }
+                })
+            );
+
+            let updateTranscriptionItemsCaptions = originalTranscriptionItems;
+
+
+            // Update each transcription item with the corresponding sentence
+            translatedItems.map((item, index) => {
+                // Check if there is a corresponding sentence in newText
+                updateTranscriptionItemsCaptions[index].content = item;
+
+            });
+
+            console.log(updateTranscriptionItemsCaptions);
+
+            updateCurrentTranscriptionItemsCaptions(updateTranscriptionItemsCaptions);
 
         } catch (error) {
-            console.error('Error translating text:', error);
-            throw error;
+            console.error('Error during translation:', error);
+            // Handle the error appropriately.
         }
     }
 
-    // Update Trascription Edit
+
+    
     const updateTranscriptionEdit = () => {
 
         const updatedTranscriptionItems = [...currentTranscriptionItemsCaptions];
@@ -84,6 +106,16 @@ const CaptionsOptions = ({ originalTranscription, originalTranscriptionItems, cu
         console.log('Values:', updatedTranscriptionItems);
     };
 
+    const applyCaptions = () => {
+
+        updateTranscriptionEdit();
+
+        updateButtonClicked(true);
+        updatePrimaryColor(primaryColor);
+        updateOutlineColor(outlineColor);
+        
+    }
+
 
     return (
 
@@ -112,9 +144,15 @@ const CaptionsOptions = ({ originalTranscription, originalTranscriptionItems, cu
 
                     <div className="flex justify-around text-xl">
 
-                        <span>Primary Color: </span>
+                        <span>Primary Color: <input type="color"
+                            value={primaryColor}
+                            onChange={(ev) => setPrimaryColor(ev.target.value)} /></span>
 
-                        <span>Outline Color: </span>
+                        <span>Outline Color: <input type="color"
+                            value={outlineColor}
+                            onChange={(ev) => setOutlineColor(ev.target.value)}
+                            
+                        /></span>
 
                     </div>
 
@@ -123,7 +161,7 @@ const CaptionsOptions = ({ originalTranscription, originalTranscriptionItems, cu
 
             </div>
 
-            <label onClick={updateTranscriptionEdit} className="cursor-pointer inline-flex items-center justify-center bg-white hover:text-blue-300 text-base sm:text-lg md:text-xl poppins relative overflow-hidden px-5 py-3 group rounded-full text-slate-950 space-x-3">
+            <label onClick={applyCaptions} className="cursor-pointer inline-flex items-center justify-center bg-white hover:text-blue-300 text-base sm:text-lg md:text-xl poppins relative overflow-hidden px-5 py-3 group rounded-full text-slate-950 space-x-3">
                 <CaptionIcon />
                 <span>Apply Captions</span>
             </label>

@@ -23,7 +23,7 @@ export default function cleanTranscriptionItems(items) {
             let currentString = item.alternatives[0].content;
             let lastCharacter = currentString.charAt(currentString.length - 1);
 
-            if (lastCharacter === ".") {
+            if (lastCharacter === "." || currentSentence.text.length >= 85) {
                 currentSentence.text += currentString;
                 currentSentence.endTime = item.end_time;
                 condensedTranscription.push({ ...currentSentence });

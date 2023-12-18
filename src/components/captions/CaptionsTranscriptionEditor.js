@@ -1,7 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 
 const CaptionsTranscriptionEditor = ({ transcriptionItems }) => {
+
+    useEffect(() => {
+       
+    }, [transcriptionItems]);
+
 
     // Function 1
     function TranscriptionItem({item, key}) {

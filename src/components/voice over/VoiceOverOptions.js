@@ -8,8 +8,6 @@ import VoiceOverLanguageDropDown from "../voice over/VoiceOverLanguageDropDown";
 import VoiceOverIcon from "../assets/VoiceOverIcon"
 
 
-import UpdateTranscriptionItems from "../../app/aws/transcriptionHelpers/updateTranscriptionItems"
-
 const VoiceOverOptions = ({ originalTranscription, originalTranscriptionItems, currentTranscriptionVoiceOver, currentTranscriptionItemsVoiceOver, updateCurrentTranscriptionItemsVoiceOver, updateCurrentTranscriptionVoiceOver }) => {
 
     const [selectedLanguageCode, setSelectedLanguageCode] = useState(null);
@@ -92,6 +90,7 @@ const VoiceOverOptions = ({ originalTranscription, originalTranscriptionItems, c
 
         // Generate SSML paragraph and update the transcription
         updateCurrentTranscriptionVoiceOver(generateSSMLParagraph(updatedTranscriptionItems));
+
     };
 
     // Helper function to generate SSML paragraph
@@ -101,7 +100,7 @@ const VoiceOverOptions = ({ originalTranscription, originalTranscriptionItems, c
     };
 
     // Get Voice Over
-    async function getVoiceOver(languageCode, Voice) {
+    async function getVoiceOver() {
         const client = new PollyClient({
             region: "us-east-2",
             credentials: {
@@ -112,13 +111,13 @@ const VoiceOverOptions = ({ originalTranscription, originalTranscriptionItems, c
 
         const input = {
             Engine: "standard",
-            LanguageCode: languageCode,
+            LanguageCode: "en-US",
             OutputFormat: "mp3",
             OutputS3BucketName: "transalte-transcribe", // Replace with your bucket name
             OutputS3KeyPrefix: "",
             TextType: "ssml",
             Text: currentTranscriptionVoiceOver,
-            VoiceId: Voice,
+            VoiceId: "Matthew",
         };
 
         try {
@@ -135,7 +134,9 @@ const VoiceOverOptions = ({ originalTranscription, originalTranscriptionItems, c
     const createVoiceOver = () => {
 
         updateTranscriptionEdit();
-        getVoiceOver(selectedLanguageCode, selectedVoiceOver);
+        console.log(selectedVoiceOver);
+        console.log(currentTranscriptionVoiceOver);
+        getVoiceOver();
 
     };
 
