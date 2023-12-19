@@ -102,8 +102,6 @@ const CaptionsOptions = ({ originalTranscriptionItems, currentTranscriptionItems
 
         // Use the callback function to update the state in the parent component
         updateCurrentTranscriptionItemsCaptions(updatedTranscriptionItems);
-
-        console.log('Values:', updatedTranscriptionItems);
     };
 
     const applyCaptions = () => {

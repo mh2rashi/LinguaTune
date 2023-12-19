@@ -1,6 +1,5 @@
 ﻿'use client'
 import DemoSection from "../components/demoSection";
-import PageHeading from "../components/pageHeading";
 import UploadButton, { isUploading, setIsUploading } from "../components/uploadButton";
 import RecordButton from "../components/recordButton";
 import DemoButton from "../components/demoButton";
@@ -18,9 +17,8 @@ export default function Home() {
     const [recordButtonClicked, setRecordButtonClicked] = useState(false);
 
     return (
-        <>
-            <PageHeading />
 
+        <>
             <div className="flex items-center justify-center gap-6">
                 
 
@@ -51,7 +49,7 @@ export default function Home() {
 
             </section>
 
-            <div className="flex flex-col flex-wrap sm:flex-row gap-4 md:gap-6 w-full mx-auto px-8 mt-8">
+            <div className="flex flex-col flex-wrap sm:flex-row gap-4 md:gap-6 w-full mx-auto px-8 mt-8 mb-20">
 
                 {/*Container 1*/}
                 <div className="flex relative flex-col gap-2 p-6 relative rounded-lg flex-1 bg-black min-w-[180px] min-h-[240px] overflow-hidden shadow-lg shadow-cyan-500 justify-between border border-solid border-white border-3">

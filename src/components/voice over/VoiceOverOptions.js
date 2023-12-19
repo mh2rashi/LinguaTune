@@ -8,10 +8,11 @@ import VoiceOverLanguageDropDown from "../voice over/VoiceOverLanguageDropDown";
 import VoiceOverIcon from "../assets/VoiceOverIcon"
 
 
-const VoiceOverOptions = ({ originalTranscription, originalTranscriptionItems, currentTranscriptionVoiceOver, currentTranscriptionItemsVoiceOver, updateCurrentTranscriptionItemsVoiceOver, updateCurrentTranscriptionVoiceOver }) => {
+const VoiceOverOptions = ({ originalTranscriptionItems, currentTranscriptionItemsVoiceOver, updateCurrentTranscriptionItemsVoiceOver, updateApplyVoiceOverClicked }) => {
 
     const [selectedLanguageCode, setSelectedLanguageCode] = useState(null);
     const [selectedVoiceOver, setSelectedVoiceOver] = useState(null);
+
 
     // Call updateTranscription with the selected language code
     const handleLanguageSelect = (languageCode) => {
@@ -28,7 +29,6 @@ const VoiceOverOptions = ({ originalTranscription, originalTranscriptionItems, c
 
     // Change Transcription Language
     async function changeTranscriptionLanguage(languageCode) {
-
         const translateClient = new TranslateClient({
             region: 'us-east-2',
             credentials: {
@@ -37,25 +37,44 @@ const VoiceOverOptions = ({ originalTranscription, originalTranscriptionItems, c
             },
         });
 
-        const params = {
-            SourceLanguageCode: 'auto', // Auto-detect source language
-            TargetLanguageCode: languageCode,
-            Text: originalTranscription,
-        };
-
         try {
-            const command = new TranslateTextCommand(params);
-            const response = await translateClient.send(command);
+            const translatedItems = await Promise.all(
+                originalTranscriptionItems.map(async (item) => {
+                    const params = {
+                        SourceLanguageCode: 'auto', // Auto-detect source language
+                        TargetLanguageCode: languageCode,
+                        Text: item.content,
+                    };
 
-            // Update Current Transcription
-            updateCurrentTranscriptionVoiceOver(response.TranslatedText);
+                    try {
+                        const command = new TranslateTextCommand(params);
+                        const response = await translateClient.send(command);
 
-            //Update AWS TranscriptionItems
-            updateCurrentTranscriptionItemsVoiceOver(UpdateTranscriptionItems(response.TranslatedText, originalTranscriptionItems, languageCode));
+                        return response.TranslatedText;
+                    } catch (error) {
+                        console.error('Error translating text:', error);
+                        throw error;
+                    }
+                })
+            );
+
+            let updateTranscriptionItemsVoiceOver = originalTranscriptionItems;
+
+
+            // Update each transcription item with the corresponding sentence
+            translatedItems.map((item, index) => {
+                // Check if there is a corresponding sentence in newText
+                updateTranscriptionItemsVoiceOver[index].content = item;
+
+            });
+
+            console.log(updateTranscriptionItemsVoiceOver);
+
+            updateCurrentTranscriptionItemsVoiceOver(updateTranscriptionItemsVoiceOver);
 
         } catch (error) {
-            console.error('Error translating text:', error);
-            throw error;
+            console.error('Error during translation:', error);
+            // Handle the error appropriately.
         }
     }
 
@@ -88,8 +107,7 @@ const VoiceOverOptions = ({ originalTranscription, originalTranscriptionItems, c
         // Use the callback function to update the state in the parent component
         updateCurrentTranscriptionItemsVoiceOver(updatedTranscriptionItems);
 
-        // Generate SSML paragraph and update the transcription
-        updateCurrentTranscriptionVoiceOver(generateSSMLParagraph(updatedTranscriptionItems));
+        console.log('Values:', updatedTranscriptionItems);
 
     };
 
@@ -109,6 +127,8 @@ const VoiceOverOptions = ({ originalTranscription, originalTranscriptionItems, c
             },
         });
 
+        const text = generateSSMLParagraph(currentTranscriptionItemsVoiceOver);
+
         const input = {
             Engine: "standard",
             LanguageCode: "en-US",
@@ -116,7 +136,7 @@ const VoiceOverOptions = ({ originalTranscription, originalTranscriptionItems, c
             OutputS3BucketName: "transalte-transcribe", // Replace with your bucket name
             OutputS3KeyPrefix: "",
             TextType: "ssml",
-            Text: currentTranscriptionVoiceOver,
+            Text: text,
             VoiceId: "Matthew",
         };
 
@@ -131,12 +151,16 @@ const VoiceOverOptions = ({ originalTranscription, originalTranscriptionItems, c
         }
     };
 
-    const createVoiceOver = () => {
+    const applyVoiceOver = () => {
 
         updateTranscriptionEdit();
-        console.log(selectedVoiceOver);
-        console.log(currentTranscriptionVoiceOver);
-        getVoiceOver();
+        console.log(currentTranscriptionItemsVoiceOver);
+        //updateApplyVoiceOverClicked(true);
+
+        //console.log(selectedVoiceOver);
+        //console.log(currentTranscriptionVoiceOver);
+
+        //getVoiceOver();
 
     };
 
@@ -172,7 +196,7 @@ const VoiceOverOptions = ({ originalTranscription, originalTranscriptionItems, c
 
             </div>
 
-            <label onClick={createVoiceOver} className="cursor-pointer inline-flex items-center justify-center bg-white hover:text-blue-300 text-base sm:text-lg md:text-xl poppins relative overflow-hidden px-5 py-3 group rounded-full text-slate-950 space-x-3">
+            <label onClick={applyVoiceOver} className="cursor-pointer inline-flex items-center justify-center bg-white hover:text-blue-300 text-base sm:text-lg md:text-xl poppins relative overflow-hidden px-5 py-3 group rounded-full text-slate-950 space-x-3">
                 <VoiceOverIcon />
                 <span>Apply Voice Over</span>
             </label>
@@ -184,3 +208,38 @@ const VoiceOverOptions = ({ originalTranscription, originalTranscriptionItems, c
 };
 
 export default VoiceOverOptions
+
+
+
+//// Change Transcription Language
+//async function changeTranscriptionLanguage(languageCode) {
+
+//    const translateClient = new TranslateClient({
+//        region: 'us-east-2',
+//        credentials: {
+//            accessKeyId: "AKIAZSN4PXGW7UO5YVIY",
+//            secretAccessKey: "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",
+//        },
+//    });
+
+//    const params = {
+//        SourceLanguageCode: 'auto', // Auto-detect source language
+//        TargetLanguageCode: languageCode,
+//        Text: originalTranscription,
+//    };
+
+//    try {
+//        const command = new TranslateTextCommand(params);
+//        const response = await translateClient.send(command);
+
+//        // Update Current Transcription
+//        updateCurrentTranscriptionVoiceOver(response.TranslatedText);
+
+//        //Update AWS TranscriptionItems
+//        updateCurrentTranscriptionItemsVoiceOver(UpdateTranscriptionItems(response.TranslatedText, originalTranscriptionItems, languageCode));
+
+//    } catch (error) {
+//        console.error('Error translating text:', error);
+//        throw error;
+//    }
+//}

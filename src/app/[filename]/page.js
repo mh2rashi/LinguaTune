@@ -10,17 +10,20 @@ import CaptionsOutputVideo from "../../components/captions/CaptionsOutputVideo"
 import CaptionsOptions from "../../components/captions/CaptionsOptions"
 
 
+import VoiceOverTranscriptionEditor from "../../components/voice over/VoiceOverTranscriptionEditor"
+import VoiceOverOutputVideo from "../../components/voice over/VoiceOverOutputVideo"
 import VoiceOverOptions from "../../components/voice over/VoiceOverOptions"
 
 import ToggleButton from "../../components/ToggleButton"
 
+import Lottie from "lottie-react"
+import transcribeAnimation from "../../components/assets/transcribeAnimation"
 
 export default function FilePage({ params }) {
 
     const filename = params.filename;
 
     const [isTranscribing, setIsTranscribing] = useState(false);
-    const [isFetchingInfo, setIsFetchingInfo] = useState(false);
 
     const [activeButton, setActiveButton] = useState('captions');
 
@@ -38,6 +41,7 @@ export default function FilePage({ params }) {
     // Variables for VoiceOver transcription
     const [currentTranscriptionItemsVoiceOver, setCurrentTranscriptionItemsVoiceOver] = useState([]);
     const [currentTranscriptionVoiceOver, setCurrentTranscriptionVoiceOver] = useState(null);
+    const [isApplyVoiceOverClicked, setApplyVoiceOverClicked] = useState(false);
 
 
     useEffect(() => {
@@ -50,11 +54,10 @@ export default function FilePage({ params }) {
 
     // Get Transcription
     async function getTranscription() {
-        setIsFetchingInfo(true);
+        setIsTranscribing(true);
 
         try {
-            const response = await axios.get('/api/transcribe?filename=' + filename);
-            setIsFetchingInfo(false);
+            const response = await axios.get('/api/transcribe?filename=' + filename)
 
             const status = response.data?.status;
             const transcription = response.data?.transcription;
@@ -81,7 +84,7 @@ export default function FilePage({ params }) {
 
         } catch (error) {
             console.error('Error fetching transcription:', error);
-            setIsFetchingInfo(false);
+            
         }
     }
 
@@ -112,6 +115,12 @@ export default function FilePage({ params }) {
         console.log(color);
     };
 
+    // Functions for CaptionsOutputVideo
+    const resetButtonClicked = (boolean) => {
+        setButtonClicked(boolean);
+        console.log('Button reset')
+    };
+
    
 
     // Functions for VoiceOver Options
@@ -121,9 +130,11 @@ export default function FilePage({ params }) {
 
     const updateCurrentTranscriptionVoiceOver = (newItems) => {
         setCurrentTranscriptionVoiceOver(newItems);
-    };
+    }
 
-    
+    const updateApplyVoiceOverClicked = (newitems) => {
+        setApplyVoiceOverClicked(newitems);
+    }
 
     
     /* Helper functions to render TranscriptionItems */
@@ -132,17 +143,9 @@ export default function FilePage({ params }) {
 
         return (
 
-            <div>Transcribing your video...</div>
-
-        );
-
-    }
-
-    if (isFetchingInfo) {
-
-        return (
-
-            <div>Fetching information...</div>
+            <div className="text-center flex flex-col items-center">
+                <Lottie animationData={transcribeAnimation} />
+            </div>
 
         );
 
@@ -152,7 +155,7 @@ export default function FilePage({ params }) {
 
     return (
 
-        <div className="">
+        <div className="mb-20">
 
             <div className="flex justify-between px-8 gap-4 mb-8">
 
@@ -169,30 +172,33 @@ export default function FilePage({ params }) {
                             updatePrimaryColor={updatePrimaryColor}
                             updateOutlineColor={updateOutlineColor}
                         /> :
-                        <CaptionsOptions
+
+                        <VoiceOverOptions
                             originalTranscriptionItems={originalTranscriptionItems}
-                            currentTranscriptionItemsCaptions={currentTranscriptionItemsCaptions}
-                            updateCurrentTranscriptionItemsCaptions={updateCurrentTranscriptionItemsCaptions}
-                            updateButtonClicked={updateButtonClicked}
-                            updatePrimaryColor={updatePrimaryColor}
-                            updateOutlineColor={updateOutlineColor}
+                            currentTranscriptionItemsVoiceOver={currentTranscriptionItemsVoiceOver}
+                            updateCurrentTranscriptionItemsVoiceOver={updateCurrentTranscriptionItemsVoiceOver}
+                            updateApplyVoiceOverClicked={updateApplyVoiceOverClicked}
                         />
-                        //<VoiceOverOptions
-                        //    originalTranscription={originalTranscription}
-                        //    originalTranscriptionItems={originalTranscriptionItems}
-                        //    currentTranscriptionVoiceOver={currentTranscriptionVoiceOver}
-                        //    currentTranscriptionItemsVoiceOver={currentTranscriptionItemsVoiceOver}
-                        //    updateCurrentTranscriptionItemsVoiceOver={updateCurrentTranscriptionItemsVoiceOver}
-                        //    updateCurrentTranscriptionVoiceOver={updateCurrentTranscriptionVoiceOver}
-                        ///>
                     }
+                    
                 </div>
 
-                <CaptionsOutputVideo filename={filename} transcriptionItems={currentTranscriptionItemsCaptions} primaryColor={primaryColor} outlineColor={outlineColor} isButtonClicked={isButtonClicked} />
+                {activeButton == 'captions' ?
+                    <CaptionsOutputVideo filename={filename} transcriptionItems={currentTranscriptionItemsCaptions} primaryColor={primaryColor} outlineColor={outlineColor} isButtonClicked={isButtonClicked} resetButtonClicked={resetButtonClicked} />
+                    :
+                                        <CaptionsOutputVideo filename={filename} transcriptionItems={currentTranscriptionItemsCaptions} primaryColor={primaryColor} outlineColor={outlineColor} isButtonClicked={isButtonClicked} resetButtonClicked={resetButtonClicked} />
+
+                 //   <VoiceOverOutputVideo filename={filename} transcriptionItems={currentTranscriptionItemsCaptions} isButtonClicked={isButtonClicked} resetButtonClicked={resetButtonClicked} /> 
+                 }
+
 
             </div>
 
-            <CaptionsTranscriptionEditor transcriptionItems={currentTranscriptionItemsCaptions} />
+            {activeButton == 'captions' ?
+                <CaptionsTranscriptionEditor transcriptionItems={currentTranscriptionItemsCaptions} />
+                :
+                <VoiceOverTranscriptionEditor transcriptionItems={currentTranscriptionItemsVoiceOver} />
+             }
             
         </div>
 

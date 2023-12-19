@@ -6,7 +6,7 @@ import robotoBold from '../../fonts/Roboto-Bold.ttf';
 import noto from '../../fonts/NotoSans-Regular.ttf';
 
 
-const CaptionsOutputVideo = ({ filename, transcriptionItems, primaryColor, outlineColor, isButtonClicked }) => {
+const CaptionsOutputVideo = ({ filename, transcriptionItems, primaryColor, outlineColor, isButtonClicked, resetButtonClicked }) => {
     const videoUrl = "https://transalte-transcribe.s3.amazonaws.com/" + filename;
     const [loaded, setLoaded] = useState(false);
     const [progress, setProgress] = useState(1);
@@ -24,6 +24,7 @@ const CaptionsOutputVideo = ({ filename, transcriptionItems, primaryColor, outli
         if (isButtonClicked) {
 
             transcode(primaryColor, outlineColor);
+            resetButtonClicked(false);
 
         };
  

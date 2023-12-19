@@ -2,6 +2,7 @@
 import './globals.css'
 import Link from 'next/link';
 import LogoIcon from "../components/assets/logoIcon";
+import PageHeading from "../components/pageHeading";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -19,7 +20,7 @@ export default function RootLayout({ children }) {
 
           <body className="bg-gradient-to-b from-blue-900 to-cyan-600 min-h-screen w-full max-w-none mx-auto">
 
-                <main className="p-4 max-w-6xl mx-auto flex flex-col gap-10">
+                <main className="p-4 max-w-6xl mx-auto flex flex-col gap-10 min-h-screen">
                       <header className="flex justify-between border-b border-white border-solid border-white-500 py-4 sm:p-6">
 
                           <Link href="/" className="flex gap-1 text-2xl font-semibold items-center">
@@ -41,9 +42,12 @@ export default function RootLayout({ children }) {
                           </nav>
 
                       </header>
+
+                      <PageHeading />
+
                       {children}
 
-                      <footer className="border-t border-white border-solid border-white-500 mt-20">
+                      <footer className="border-t border-white border-solid border-white-500 mt-auto">
                           <div className="py-10  flex flex-col justify-center items-center gap-4 sm:gap-6 ">
                                <p className="bold font-semibold text-3xl ">Get in touch</p>
 
