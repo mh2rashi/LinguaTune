@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { TranslateClient, TranslateTextCommand } from "@aws-sdk/client-translate"
 
@@ -11,6 +11,8 @@ const CaptionsOptions = ({ originalTranscriptionItems, currentTranscriptionItems
 
     const [primaryColor, setPrimaryColor] = useState('#FFFFFF');
     const [outlineColor, setOutlineColor] = useState('#000000');
+
+
 
     // Call updateTranscription with the selected language code
     const handleLanguageSelect = (selectedLanguageCode) => {

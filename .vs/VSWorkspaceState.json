@@ -1,16 +1,16 @@
 {
   "ExpandedNodes": [
     "",
-    "\\public",
     "\\src",
     "\\src\\app",
-    "\\src\\app\\api",
-    "\\src\\app\\api\\transcribe",
-    "\\src\\app\\api\\upload",
     "\\src\\app\\aws",
     "\\src\\app\\aws\\transcriptionHelpers",
-    "\\src\\app\\[filename]"
+    "\\src\\app\\[filename]",
+    "\\src\\components",
+    "\\src\\components\\captions",
+    "\\src\\components\\voice over",
+    "\\src\\fonts"
   ],
-  "SelectedNode": "\\src\\app\\api\\transcribe\\route.js",
+  "SelectedNode": "\\src\\components\\captions\\CaptionsTranscriptionEditor.js",
   "PreviewInSolutionExplorer": false
 }

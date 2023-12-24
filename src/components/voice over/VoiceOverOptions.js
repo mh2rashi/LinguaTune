@@ -1,24 +1,31 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { TranslateClient, TranslateTextCommand } from "@aws-sdk/client-translate"
-import { PollyClient, StartSpeechSynthesisTaskCommand } from "@aws-sdk/client-polly";
+import { PollyClient, StartSpeechSynthesisTaskCommand, DescribeVoicesCommand } from "@aws-sdk/client-polly";
 
 
 import VoiceOverLanguageDropDown from "../voice over/VoiceOverLanguageDropDown";
 import VoiceOverIcon from "../assets/VoiceOverIcon"
 
 
-const VoiceOverOptions = ({ originalTranscriptionItems, currentTranscriptionItemsVoiceOver, updateCurrentTranscriptionItemsVoiceOver, updateApplyVoiceOverClicked }) => {
+const VoiceOverOptions = ({ originalTranscriptionItems, currentTranscriptionItemsVoiceOver, updateCurrentTranscriptionItemsVoiceOver, updateApplyVoiceOverClicked, updateAudioFile }) => {
 
     const [selectedLanguageCode, setSelectedLanguageCode] = useState(null);
     const [selectedVoiceOver, setSelectedVoiceOver] = useState(null);
+
+
+    useEffect(() => {
+
+        changeTranscriptionLanguage("en");
+
+    }, []);
 
 
     // Call updateTranscription with the selected language code
     const handleLanguageSelect = (languageCode) => {
 
         setSelectedLanguageCode(languageCode);
-        changeTranscriptionLanguage(selectedLanguageCode);
+        changeTranscriptionLanguage(languageCode);
     };
 
     const handleVoiceOver = (voiceOver) => {
@@ -78,7 +85,48 @@ const VoiceOverOptions = ({ originalTranscriptionItems, currentTranscriptionItem
         }
     }
 
+    // Helper function to generate SSML paragraph
+    const generateSSMLParagraph = (transcriptionItems) => {
+        const ssmlContent = transcriptionItems.map((item) => `<prosody amazon:max-duration="${item.end_time - item.start_time}s" >${item.content}</prosody>`).join('\n');
+        return `<speak>\n${ssmlContent}\n</speak>`;
+    };
+
+    // Get Voice Over
+    async function getVoiceOver(transcriptionItems) {
+        const client = new PollyClient({
+            region: "us-east-2",
+            credentials: {
+                accessKeyId: "AKIAZSN4PXGW7UO5YVIY",
+                secretAccessKey: "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",
+            },
+        });
+
+        const text = generateSSMLParagraph(transcriptionItems);
+
+        const input = {
+            Engine: "standard",
+            LanguageCode: "en-US",
+            OutputFormat: "mp3",
+            OutputS3BucketName: "transalte-transcribe", // Replace with your bucket name
+            OutputS3KeyPrefix: "",
+            TextType: "ssml",
+            Text: text,
+            VoiceId: selectedVoiceOver,
+        };
+
+        try {
+            const command = new StartSpeechSynthesisTaskCommand(input);
+            const response = await client.send(command);
+
+            console.log("Task ID:", response.SynthesisTask?.TaskId);
+            updateAudioFile(response.SynthesisTask?.TaskId + ".mp3");
+        } catch (error) {
+            console.error("Error submitting synthesis task:", error);
+        }
+    };
+
     function updateTranscriptionEdit() {
+    
         const updatedTranscriptionItems = [...currentTranscriptionItemsVoiceOver];
 
         updatedTranscriptionItems.forEach((item, key) => {
@@ -109,58 +157,18 @@ const VoiceOverOptions = ({ originalTranscriptionItems, currentTranscriptionItem
 
         console.log('Values:', updatedTranscriptionItems);
 
+        console.log(selectedVoiceOver);
+
+        getVoiceOver(updatedTranscriptionItems);
+
     };
 
-    // Helper function to generate SSML paragraph
-    const generateSSMLParagraph = (transcriptionItems) => {
-        const ssmlContent = transcriptionItems.map((item) => `<s>${item.content}</s>`).join('\n');
-        return `<speak>\n${ssmlContent}\n</speak>`;
-    };
-
-    // Get Voice Over
-    async function getVoiceOver() {
-        const client = new PollyClient({
-            region: "us-east-2",
-            credentials: {
-                accessKeyId: "AKIAZSN4PXGW7UO5YVIY",
-                secretAccessKey: "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",
-            },
-        });
-
-        const text = generateSSMLParagraph(currentTranscriptionItemsVoiceOver);
-
-        const input = {
-            Engine: "standard",
-            LanguageCode: "en-US",
-            OutputFormat: "mp3",
-            OutputS3BucketName: "transalte-transcribe", // Replace with your bucket name
-            OutputS3KeyPrefix: "",
-            TextType: "ssml",
-            Text: text,
-            VoiceId: "Matthew",
-        };
-
-        try {
-            const command = new StartSpeechSynthesisTaskCommand(input);
-            const response = await client.send(command);
-
-            console.log("Task submitted successfully!");
-            console.log("Task ID:", response.SynthesisTask?.TaskId);
-        } catch (error) {
-            console.error("Error submitting synthesis task:", error);
-        }
-    };
-
+   
     const applyVoiceOver = () => {
 
         updateTranscriptionEdit();
-        console.log(currentTranscriptionItemsVoiceOver);
-        //updateApplyVoiceOverClicked(true);
-
-        //console.log(selectedVoiceOver);
-        //console.log(currentTranscriptionVoiceOver);
-
-        //getVoiceOver();
+        updateApplyVoiceOverClicked(true);
+        
 
     };
 
@@ -211,35 +219,27 @@ export default VoiceOverOptions
 
 
 
-//// Change Transcription Language
-//async function changeTranscriptionLanguage(languageCode) {
-
-//    const translateClient = new TranslateClient({
-//        region: 'us-east-2',
+// Get Voice Over
+//async function getVoiceInfo() {
+//    const client = new PollyClient({
+//        region: "us-east-2",
 //        credentials: {
 //            accessKeyId: "AKIAZSN4PXGW7UO5YVIY",
 //            secretAccessKey: "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",
 //        },
 //    });
 
-//    const params = {
-//        SourceLanguageCode: 'auto', // Auto-detect source language
-//        TargetLanguageCode: languageCode,
-//        Text: originalTranscription,
+//    const input = { // DescribeVoicesInput
+//        Engine: "standard",
 //    };
 
 //    try {
-//        const command = new TranslateTextCommand(params);
-//        const response = await translateClient.send(command);
+//        const command = new DescribeVoicesCommand(input);
+//        const response = await client.send(command);
 
-//        // Update Current Transcription
-//        updateCurrentTranscriptionVoiceOver(response.TranslatedText);
-
-//        //Update AWS TranscriptionItems
-//        updateCurrentTranscriptionItemsVoiceOver(UpdateTranscriptionItems(response.TranslatedText, originalTranscriptionItems, languageCode));
+//        console.log(response.Voices);
 
 //    } catch (error) {
-//        console.error('Error translating text:', error);
-//        throw error;
+//        console.error("Error submitting synthesis task:", error);
 //    }
-//}
+//};

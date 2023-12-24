@@ -37,12 +37,16 @@ export default function FilePage({ params }) {
     const [isButtonClicked, setButtonClicked] = useState(false);
     const [primaryColor, setPrimaryColor] = useState(null);
     const [outlineColor, setOutlineColor] = useState(null);
+    const [keyCaptions, setKeyCaptions] = useState(0);
 
     // Variables for VoiceOver transcription
     const [currentTranscriptionItemsVoiceOver, setCurrentTranscriptionItemsVoiceOver] = useState([]);
     const [currentTranscriptionVoiceOver, setCurrentTranscriptionVoiceOver] = useState(null);
     const [isApplyVoiceOverClicked, setApplyVoiceOverClicked] = useState(false);
+    const [keyVoiceOver, setKeyVoiceOver] = useState(0);
+    const [audioFile, setAudioFile] = useState(null);
 
+    
 
     useEffect(() => {
 
@@ -51,7 +55,6 @@ export default function FilePage({ params }) {
     }, [filename])
 
    
-
     // Get Transcription
     async function getTranscription() {
         setIsTranscribing(true);
@@ -98,6 +101,7 @@ export default function FilePage({ params }) {
     // Functions for Captions Options
     const updateCurrentTranscriptionItemsCaptions = (newItems) => {
         setCurrentTranscriptionItemsCaptions(newItems);
+        setKeyCaptions((prevKey) => prevKey + 1);
     };
 
     const updateButtonClicked = (boolean) => {
@@ -122,19 +126,29 @@ export default function FilePage({ params }) {
     };
 
    
-
     // Functions for VoiceOver Options
     const updateCurrentTranscriptionItemsVoiceOver = (newItems) => {
-        setCurrentTranscriptionItemsVoiceOver(newItems);
+        setCurrentTranscriptionItemsVoiceOver(newItems)
+        setKeyVoiceOver((prevKey) => prevKey + 1);
+
     };
 
-    const updateCurrentTranscriptionVoiceOver = (newItems) => {
-        setCurrentTranscriptionVoiceOver(newItems);
+    const updateApplyVoiceOverClicked = (boolean) => {
+        setApplyVoiceOverClicked(boolean);
+        console.log(boolean);
+    };
+
+    const updateAudioFile = (file) => {
+        setAudioFile(file);
+        console.log(file);
+
     }
 
-    const updateApplyVoiceOverClicked = (newitems) => {
-        setApplyVoiceOverClicked(newitems);
-    }
+    // Functions for VoiceOverOutputVideo
+    const resetApplyVoiceOverClicked = (boolean) => {
+        setApplyVoiceOverClicked(boolean);
+        console.log('Button reset: ' + boolean);
+    };
 
     
     /* Helper functions to render TranscriptionItems */
@@ -178,6 +192,7 @@ export default function FilePage({ params }) {
                             currentTranscriptionItemsVoiceOver={currentTranscriptionItemsVoiceOver}
                             updateCurrentTranscriptionItemsVoiceOver={updateCurrentTranscriptionItemsVoiceOver}
                             updateApplyVoiceOverClicked={updateApplyVoiceOverClicked}
+                            updateAudioFile={updateAudioFile}
                         />
                     }
                     
@@ -186,18 +201,16 @@ export default function FilePage({ params }) {
                 {activeButton == 'captions' ?
                     <CaptionsOutputVideo filename={filename} transcriptionItems={currentTranscriptionItemsCaptions} primaryColor={primaryColor} outlineColor={outlineColor} isButtonClicked={isButtonClicked} resetButtonClicked={resetButtonClicked} />
                     :
-                                        <CaptionsOutputVideo filename={filename} transcriptionItems={currentTranscriptionItemsCaptions} primaryColor={primaryColor} outlineColor={outlineColor} isButtonClicked={isButtonClicked} resetButtonClicked={resetButtonClicked} />
-
-                 //   <VoiceOverOutputVideo filename={filename} transcriptionItems={currentTranscriptionItemsCaptions} isButtonClicked={isButtonClicked} resetButtonClicked={resetButtonClicked} /> 
+                    <VoiceOverOutputVideo filename={filename} audioFile={audioFile} isApplyVoiceOverClicked={isApplyVoiceOverClicked} resetApplyVoiceOverClicked={resetApplyVoiceOverClicked} /> 
                  }
 
 
             </div>
 
             {activeButton == 'captions' ?
-                <CaptionsTranscriptionEditor transcriptionItems={currentTranscriptionItemsCaptions} />
+                <CaptionsTranscriptionEditor uniqueKeyCaptions={keyCaptions} transcriptionItems={currentTranscriptionItemsCaptions} />
                 :
-                <VoiceOverTranscriptionEditor transcriptionItems={currentTranscriptionItemsVoiceOver} />
+                <VoiceOverTranscriptionEditor uniqueKeyVoiceOver={keyVoiceOver}  transcriptionItems={currentTranscriptionItemsVoiceOver} />
              }
             
         </div>

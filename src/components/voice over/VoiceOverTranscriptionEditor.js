@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 
-const VoiceOverTranscriptionEditor = ({ transcriptionItems }) => {
+const VoiceOverTranscriptionEditor = ({ uniqueKeyVoiceOver, transcriptionItems }) => {
 
     useEffect(() => {
 

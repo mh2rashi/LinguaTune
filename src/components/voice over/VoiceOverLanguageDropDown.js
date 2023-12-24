@@ -12,57 +12,162 @@ const VoiceOverLanguageDropDown = ({ selectedLanguageCode, selectedVoiceOver }) 
     const dropdownRef = useRef(null);
 
     const languageNames = [
-        "Turkish", "Swedish", "Russian", "Romanian", "Portuguese",
-        "Brazilian Portuguese", "Polish", "Dutch", "Norwegian", "Korean",
-        "Japanese", "Italian", "Icelandic", "French", "Canadian French",
-        "US Spanish", "Mexican Spanish", "Castilian Spanish", "Welsh English",
-        "US English", "Indian English", "British English", "Australian English",
-        "German"
+        "Turkish", "Swedish", "Russian", "Romanian", "Portuguese", "Brazilian Portuguese", "Polish", "Dutch",
+        "Norwegian", "Korean", "Japanese", "Italian", "Icelandic", "French", "Canadian French", "US Spanish",
+        "Mexican Spanish", "Castilian Spanish", "Welsh English", "US English","Indian English",
+        "British English", "Australian English", "German", "Danish", "Welsh", "Chinese Mandarin", "Arabic"
     ];
 
     const LanguageGenders = {
         "Turkish": ["Female"],
         "Swedish": ["Female"],
-        "Russian": ["Male", "Female"],
+        "Russian": ["Female", "Male"],
         "Romanian": ["Female"],
-        "Portuguese": ["Male", "Female"],
-        "Brazilian Portuguese": ["Male", "Female"],
-        "Polish": ["Male", "Female"],
+        "Portuguese": ["Female", "Male"],
+        "Brazilian Portuguese": ["Female", "Male"],
+        "Polish": ["Female", "Male"],
         "Dutch": ["Male", "Female"],
         "Norwegian": ["Female"],
         "Korean": ["Female"],
         "Japanese": ["Male", "Female"],
-        "Italian": ["Male", "Female"],
+        "Italian": ["Female", "Male"],
         "Icelandic": ["Male", "Female"],
         "French": ["Male", "Female"],
         "Canadian French": ["Female"],
-        "US Spanish": ["Male", "Female"],
+        "US Spanish": ["Female", "Male"],
         "Mexican Spanish": ["Female"],
-        "Castilian Spanish": ["Male", "Female"],
-        "Welsh English": ["Male"],
-        "US English": ["Male", "Female"],
+        "Castilian Spanish": ["Female", "Male"],
+        "Welsh English": ["Male", "Female"],
+        "US English": ["Female", "Male"],
         "Indian English": ["Female"],
-        "British English": ["Male", "Female"],
+        "British English": ["Female", "Male"],
         "Australian English": ["Male", "Female"],
-        "German": ["Male", "Female"],
+        "German": ["Female", "Male"],
+        "Danish": ["Female", "Male"],
+        "Welsh": ["Female"],
+        "Chinese Mandarin": ["Female"],
+        "Arabic": ["Female"]
     };
 
+    const LanguageVoices = {
+        "Turkish": {
+            "Female": ["Filiz"],
+        },
+        "Swedish": {
+            "Female": ["Astrid"],
+        },
+        "Russian": {
+            "Female": ["Tatyana"],
+            "Male": ["Maxim"],
+        },
+        "Romanian": {
+            "Female": ["Carmen"],
+        },
+        "Portuguese": {
+            "Female": ["Ines"],
+            "Male": ["Cristiano"],
+        },
+        "Brazilian Portuguese": {
+            "Female": ["Vitoria", "Camila"],
+            "Male": ["Ricardo"],
+        },
+        "Polish": {
+            "Female": ["Maja", "Ewa"],
+            "Male": ["Jan", "Jacek"],
+        },
+        "Dutch": {
+            "Male": ["Ruben"],
+            "Female": ["Lotte"],
+        },
+        "Norwegian": {
+            "Female": ["Liv"],
+        },
+        "Korean": {
+            "Female": ["Seoyeon"],
+        },
+        "Japanese": {
+            "Male": ["Takumi"],
+            "Female": ["Mizuki"],
+        },
+        "Italian": {
+            "Female": ["Bianca", "Carla"],
+            "Male": ["Giorgio"],
+        },
+        "Icelandic": {
+            "Male": ["Karl"],
+            "Female": ["Dora"],
+        },
+        "French": {
+            "Male": ["Mathieu"],
+            "Female": ["Lea", "Celine"],
+        },
+        "Canadian French": {
+            "Female": ["Chantal"],
+        },
+        "US Spanish": {
+            "Female": ["Penelope", "Lupe"],
+            "Male": ["Miguel"],
+        },
+        "Mexican Spanish": {
+            "Female": ["Mia"],
+        },
+        "Castilian Spanish": {
+            "Female": ["Lucia", "Conchita"],
+            "Male": ["Enrique"],
+        },
+        "Welsh English": {
+            "Male": ["Geraint"],
+        },
+        "US English": {
+            "Female": ["Salli", "Kimberly", "Joanna", "Ivy", "Raveena"],
+            "Male": ["Matthew", "Justin", "Joey"],
+        },
+        "Indian English": {
+            "Female": ["Aditi"],
+        },
+        "British English": {
+            "Female": ["Emma", "Amy"],
+            "Male": ["Brian", "Russell"],
+        },
+        "Australian English": {
+            "Female": ["Nicole"],
+            "Male": ["Russell"],
+        },
+        "German": {
+            "Female": ["Vicki", "Marlene"],
+            "Male": ["Hans"],
+        },
+        "Danish": {
+            "Female": ["Naja"],
+            "Male": ["Mads"],
+        },
+        "Welsh": {
+            "Female": ["Gwyneth"],
+        },
+        "Chinese Mandarin": {
+            "Female": ["Zhiyu"],
+        },
+        "Arabic": {
+            "Female": ["Zeina"],
+        },
+    };
+    
     const languageCodes = {
         "Turkish": "tr",
         "Swedish": "sv",
         "Russian": "ru",
         "Romanian": "ro",
         "Portuguese": "pt",
-        "Brazilian Portuguese": "pt-BR",
+        "Brazilian Portuguese": "pt",
         "Polish": "pl",
         "Dutch": "nl",
-        "Norwegian": "no",
+        "Norwegian": "nb",
         "Korean": "ko",
         "Japanese": "ja",
         "Italian": "it",
         "Icelandic": "is",
         "French": "fr",
-        "Canadian French": "fr-CA",
+        "Canadian French": "fr",
         "US Spanish": "es",
         "Mexican Spanish": "es",
         "Castilian Spanish": "es",
@@ -71,8 +176,13 @@ const VoiceOverLanguageDropDown = ({ selectedLanguageCode, selectedVoiceOver }) 
         "Indian English": "en",
         "British English": "en",
         "Australian English": "en",
-        "German": "de"
+        "German": "de",
+        "Danish": "da",
+        "Welsh": "cy",
+        "Chinese Mandarin": "cmn",
+        "Arabic": "arb"
     };
+    
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -93,21 +203,15 @@ const VoiceOverLanguageDropDown = ({ selectedLanguageCode, selectedVoiceOver }) 
 
     const handleLanguageClick = (language) => {
 
-        // Set selected language
-        setSelectedLanguage(language);
-
         // Close all other dropdown menus
         setIsOpenLanguage(false);
         setIsOpenGender(false);
         setIsOpenVoice(false);
 
         // Reset gender and voice selections when language changes
+        setSelectedLanguage(language);
         setSelectedGender(LanguageGenders[language][0]);
         setSelectedVoice(LanguageVoices[language][selectedGender][0]);
-
-        // Outputs
-        onSelectLanguageCode(LanguageCode[language]);
-        onSelectVoice(LanguageVoices[language][selectedGender][0]);
 
         selectedLanguageCode(languageCodes[language]);
         selectedVoiceOver(LanguageVoices[language][selectedGender][0])
@@ -115,34 +219,31 @@ const VoiceOverLanguageDropDown = ({ selectedLanguageCode, selectedVoiceOver }) 
 
     const handleGenderClick = (gender) => {
 
-        // Set selected gender
-        setSelectedGender(gender);
-
-        // Close all other languages
+        // Close all other dropdown menus
         setIsOpenLanguage(false);
         setIsOpenGender(false);
         setIsOpenVoice(false);
 
-        // Reset voice selection when gender changes
-        setSelectedVoice(LanguageVoices[selectedLanguage][gender][0]);
+
+        // Set selected gender
+        setSelectedGender(gender);
 
         // Outputs
-        selectedLanguageCode(LanguageCode[selectedLanguage]);
         selectedVoiceOver(LanguageVoices[selectedLanguage][gender][0]);
     };
 
     const handleVoiceClick = (voice) => {
-        // Set selected voice
-        setSelectedVoice(voice);
-
 
         // Close all other languages
         setIsOpenLanguage(false);
         setIsOpenGender(false);
         setIsOpenVoice(false);
 
+
+        // Set selected voice
+        setSelectedVoice(voice);
+
         // Outputs
-        selectedLanguageCode(LanguageCode[selectedLanguage]);
         selectedVoiceOver(voice);
     };
     

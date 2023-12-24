@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 
-const CaptionsTranscriptionEditor = ({ transcriptionItems }) => {
+const CaptionsTranscriptionEditor = ({ uniqueKeyCaptions, transcriptionItems }) => {
 
     useEffect(() => {
        
