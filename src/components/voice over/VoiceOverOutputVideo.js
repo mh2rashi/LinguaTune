@@ -1,12 +1,14 @@
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { toBlobURL, fetchFile } from "@ffmpeg/util";
 import { useEffect, useState, useRef } from "react";
+import { createFFmpeg } from '@ffmpeg/ffmpeg';
 
 
 
 const VoiceOverOutputVideo = ({ filename, audioFile, isApplyVoiceOverClicked, resetApplyVoiceOverClicked }) => {
-    const videoUrl = "https://transalte-transcribe.s3.amazonaws.com/" + filename;
-    const mp3Url = "https://transalte-transcribe.s3.amazonaws.com/" + audioFile;
+    const videoUrl = "https://transalte-transcribe.s3.us-east-2.amazonaws.com/" + filename;
+    //const mp3Url = "https://transalte-transcribe.s3.amazonaws.com/" + "81a10dc5-65fb-41d4-ae90-2f3c95f0ce6e.mp3";
+    const mp3Url = "https://transalte-transcribe.s3.us-east-2.amazonaws.com/81a10dc5-65fb-41d4-ae90-2f3c95f0ce6e.mp3";
     const [loaded, setLoaded] = useState(false);
     const [progress, setProgress] = useState(1);
     const ffmpegRef = useRef(new FFmpeg());
@@ -20,14 +22,14 @@ const VoiceOverOutputVideo = ({ filename, audioFile, isApplyVoiceOverClicked, re
 
     useEffect(() => {
 
-        if (isButtonClicked) {
+        if (isApplyVoiceOverClicked) {
 
             transcode();
-            resetButtonClicked(false);
+            resetApplyVoiceOverClicked(false);
 
         };
 
-    }, [isButtonClicked]);
+    }, [isApplyVoiceOverClicked]);
 
     const load = async () => {
         const ffmpeg = ffmpegRef.current;
@@ -38,50 +40,100 @@ const VoiceOverOutputVideo = ({ filename, audioFile, isApplyVoiceOverClicked, re
         });
 
         setLoaded(true);
-    }
+    };
 
+
+    //async function transcode() {
+    //    const ffmpeg = ffmpegRef.current;
+
+    //    console.log(filename);
+    //    const audioData = await fetch(mp3Url).then(response => response.arrayBuffer());
+    //    await ffmpeg.writeFile('81a10dc5 - 65fb - 41d4 - ae90 - 2f3c95f0ce6e.mp3', audioData);
+
+    //    // Write the video file
+    //    const videoData = await fetch(videoUrl).then(response => response.arrayBuffer())
+    //    await ffmpeg.writeFile(filename, videoData);
+
+    //    // Set the video file as input
+    //    await ffmpeg.input(filename);
+    //    await ffmpeg.input('81a10dc5-65fb-41d4-ae90-2f3c95f0ce6e.mp3').audioCodec('aac');
+
+    //    await new Promise((resolve, reject) => {
+    //        videoRef.current.onloadedmetadata = resolve;
+    //    });
+    //    const duration = videoRef.current.duration;
+    //    ffmpeg.on('log', ({ message }) => {
+    //        const regexResult = /time=([0-9:.]+)/.exec(message);
+    //        if (regexResult && regexResult?.[1]) {
+    //            const howMuchIsDone = regexResult?.[1];
+    //            const [hours, minutes, seconds] = howMuchIsDone.split(':');
+    //            const doneTotalSeconds = hours * 3600 + minutes * 60 + seconds;
+    //            const videoProgress = doneTotalSeconds / duration;
+    //            setProgress(videoProgress);
+    //        }
+    //    })
+
+
+    //    await ffmpeg.exec([
+    //        '-i', filename,           // Input video file
+    //        '-i', '81a10dc5-65fb-41d4-ae90-2f3c95f0ce6e.mp3',        // Input audio file
+    //        '-c:v', 'copy',           // Copy video codec
+    //        '-c:a', 'aac',            // Set audio codec to AAC
+    //        '-strict', 'experimental',
+    //        'output.mp4'               // Output file
+    //    ]);
+
+    //    const data = await ffmpeg.readFile('output.mp4');
+    //    videoRef.current.src =
+    //        URL.createObjectURL(new Blob([data.buffer], { type: 'video/mp4' }));
+    //    setProgress(1);
+
+
+    //}
 
     async function transcode() {
+
         const ffmpeg = ffmpegRef.current;
 
-        // Write the audio file to be applied
-        await ffmpeg.writeFile('audio.mp3', await fetchFile(mp3Url));
+        // Load ffmpeg
+        await ffmpeg.load();
 
-        // Write the video file and subtitles
-        await ffmpeg.writeFile(filename, await fetchFile(videoUrl));
+        // Fetch and write the audio file
+        const audioBuffer = await fetch(mp3Url).then(response => response.arrayBuffer());
+        console.log('audio console', audioBuffer);
+        await ffmpeg.writeFile('audio.mp3', audioBuffer);
 
-        // Set the video file as input
-        await ffmpeg.input(filename);
 
-        // Set the audio file as input and specify audio codec
-        await ffmpeg.input('audio.mp3').audioCodec('aac');
+        // Fetch and write the video file
+        const videoData = await fetchFile(videoUrl);
+        console.log('video console', videoData);
+        await ffmpeg.writeFile(filename, videoBuffer);
 
-        // Other commands
-        await ffmpeg
-            .inputOptions(['-ss', '0'])
-            .outputOptions(['-preset', 'ultrafast'])
-            .complexFilter([
-                `[0:v]subtitles=subs.srt:fontsdir=/tmp:force_style='Fontname=Roboto,MarginV=25,PrimaryColour=${toFFmpegColor(primaryColor)},OutlineColour=${toFFmpegColor(outlineColor)}'[v]`,
-                '[v]copy[outv]',
-                '[1:a]ac[aud]'
-            ])
-            .output('output.mp4')
-            .on('progress', (progress) => {
-                // Handle progress updates
-                const videoProgress = progress.percent / 100;
-                setProgress(videoProgress);
-            });
+        //// Set inputs
+        //await ffmpeg.input('input.mp4');
+        //await ffmpeg.input('audio.mp3').audioCodec('aac');
 
-        // Execute the command
-        await ffmpeg.run();
+        //// Set progress update callback
+        //const duration = videoRef.current.duration;
+        //ffmpeg.setProgress(({ ratio }) => {
+        //    const doneTotalSeconds = duration * ratio;
+        //    const videoProgress = doneTotalSeconds / duration;
+        //    setProgress(videoProgress);
+        //});
 
-        const data = await ffmpeg.readFile('output.mp4');
-        videoRef.current.src =
-            URL.createObjectURL(new Blob([data.buffer], { type: 'video/mp4' }));
-        setProgress(1);
+        //// Run ffmpeg command
+        //await ffmpeg.run(
+        //    '-c:v', 'copy',
+        //    '-c:a', 'aac',
+        //    '-strict', 'experimental',
+        //    'output.mp4'
+        //);
+
+        //// Read and display the output video
+        //const data = ffmpeg.read('output.mp4');
+        //videoRef.current.src = URL.createObjectURL(new Blob([data.buffer], { type: 'video/mp4' }));
+        //setProgress(1);
     }
-
-
 
 
     return (

@@ -3,14 +3,14 @@
     "",
     "\\src",
     "\\src\\app",
+    "\\src\\app\\api",
+    "\\src\\app\\api\\upload",
     "\\src\\app\\aws",
-    "\\src\\app\\aws\\transcriptionHelpers",
-    "\\src\\app\\[filename]",
     "\\src\\components",
     "\\src\\components\\captions",
     "\\src\\components\\voice over",
     "\\src\\fonts"
   ],
-  "SelectedNode": "\\src\\components\\captions\\CaptionsTranscriptionEditor.js",
+  "SelectedNode": "\\src\\app\\layout.js",
   "PreviewInSolutionExplorer": false
 }
