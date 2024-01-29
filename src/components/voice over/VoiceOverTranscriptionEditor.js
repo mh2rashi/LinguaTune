@@ -71,7 +71,7 @@ const VoiceOverTranscriptionEditor = ({ uniqueKeyVoiceOver, transcriptionItems }
             </div>
 
             {transcriptionItems && (
-                <div className="h-24 sm:h-auto overflow-y-auto sm:overflow-auto">
+                <div className="flex-col">
                     {transcriptionItems.map((item, key) => (
                         <div key={key} id={key}>
                             <TranscriptionItem

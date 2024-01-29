@@ -169,11 +169,11 @@ export default function FilePage({ params }) {
 
     return (
 
-        <div className="mb-20">
+        <div className="">
 
-            <div className="flex justify-between px-8 gap-4 mb-8">
+            <div className="flex flex-col sm:flex-row justify-between gap-4 mb-8">
 
-                <div className="flex flex-col flex-1 flex-grow px-4 mt-2 gap-6">
+                <div className="flex flex-col flex-1 px-4 mt-2 gap-6">
 
                     <ToggleButton activeButton={activeButton} updateToggleButton={updateToggleButton} />
 

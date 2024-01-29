@@ -34,14 +34,14 @@ const CaptionsTranscriptionEditor = ({ uniqueKeyCaptions, transcriptionItems }) 
         };
 
         return (
-            <div className="my-1 grid grid-cols-3 gap-1 items-center" style={{ gridTemplateColumns: '10% 10% 80%' }}>
+            <div className="my-1 grid grid-cols-3 gap-1 items-center" style={{ gridTemplateColumns: '12% 12% 76%' }}>
                 <input type="text"
-                    className="bg-white/20 p-1 rounded-md sm:text-lg md:text-xl"
+                    className="bg-white/20 p-1 rounded-md sm:text-lg md:text-xl flex"
                     value={startValue}
                     onChange={handleStartTimeChange}
                 />
                 <input type="text"
-                    className="bg-white/20 p-1 rounded-md sm:text-lg md:text-xl"
+                    className="bg-white/20 p-1 rounded-md sm:text-lg md:text-xl flex"
                     value={endValue}
                     onChange={handleEndTimeChange}
                 />
@@ -62,7 +62,7 @@ const CaptionsTranscriptionEditor = ({ uniqueKeyCaptions, transcriptionItems }) 
 
         <>
 
-            <div className="text-white bg-black border border-white border-solid p-2 border-2 grid grid-cols-3 gap-1 rounded-md" style={{ gridTemplateColumns: '10% 10% 80%' }}>
+            <div className="flex-1 text-white bg-black border border-white border-solid p-2 border-2 grid grid-cols-3 gap-1 rounded-md" style={{ gridTemplateColumns: '12% 12% 76%' }}>
 
                 <h1 className="text-left border-solid border-white border-1 sm:text-lg md:text-xl">Start</h1>
                 <h1 className="text-left border-solid border-white border-1 sm:text-lg md:text-xl">End</h1>
@@ -71,7 +71,7 @@ const CaptionsTranscriptionEditor = ({ uniqueKeyCaptions, transcriptionItems }) 
             </div>
 
             {transcriptionItems && (
-                <div className="h-24 sm:h-auto overflow-y-auto sm:overflow-auto">
+                <div className="flex-col">
                     {transcriptionItems.map((item, key) => (
                         <div key={key} id={key}>
                             <TranscriptionItem

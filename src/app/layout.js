@@ -1,7 +1,6 @@
 ﻿import { Inter } from '@next/font/google'
 import './globals.css'
-import Link from 'next/link';
-import LogoIcon from "../components/assets/logoIcon";
+import Header from "../components/header"
 import PageHeading from "../components/pageHeading";
 
 const inter = Inter({ subsets: ['latin'] })
@@ -14,6 +13,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
 
+    // const [isMenuToggled, setIsMenuToggled] = useState(false);
 
   return (
       <html lang="en" className={inter.className}>
@@ -21,26 +21,9 @@ export default function RootLayout({ children }) {
           <body className="bg-gradient-to-b from-blue-900 to-cyan-600 min-h-screen w-full max-w-none mx-auto">
 
                 <main className="p-4 max-w-6xl mx-auto flex flex-col gap-10 min-h-screen">
+            
+                      <Header/>
                       
-                      <header className="flex justify-between border-b border-white border-solid border-white-500 py-4 sm:p-6">
-
-                          <Link href="/" className="flex gap-1 text-2xl font-semibold items-center">
-
-                              < LogoIcon />
-                              <div>Lingua<span className="text-blue-300">Tune</span></div>
-
-                          </Link>
-
-                          <nav className="flex items-center gap-6 sm:gap:8 text-white cursor:pointer text-xl">
-                              <Link className="hover:text-blue-300" href="/">Home</Link>
-                              <Link className="hover:text-blue-300 smooth-scroll" href="/#about">About</Link>
-                           
-                              <button class="flex items-center justify-center bg-white hover:text-blue-300 text-base sm:text-lg md:text-xl poppins relative overflow-hidden px-6 py-3 group rounded-full text-slate-950 space-x-3">
-                                  <Link className="hover:text-blue-300" href="/">New+</Link>
-                              </button>
-                          </nav>
-
-                      </header>
 
                       <PageHeading />
 

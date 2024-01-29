@@ -3,7 +3,7 @@ import React from 'react';
 const ToggleButton = ({ activeButton, updateToggleButton }) => {
 
     return (
-        <div className="flex relative rounded-full border border-white border-solid p-1 border-2">
+        <div className="flex flex-row relative rounded-full border border-white border-solid p-1 border-2">
             {/* Black background for Captions button */}
             {activeButton === 'captions' && (
                 <div className="absolute inset-y-0 left-0 bg-black z-10 w-1/2 text-blue-300 rounded-full transition-transform transform"></div>
