@@ -161,7 +161,6 @@ export default function RecordVideoSection() {
                 </div>
             )}
 
-
             {isUploading && (
                 <div className="bg-black/80 text-white fixed inset-0 flex items-center justify-center">
                     <div className="text-center flex flex-col items-center">

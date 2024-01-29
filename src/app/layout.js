@@ -21,6 +21,7 @@ export default function RootLayout({ children }) {
           <body className="bg-gradient-to-b from-blue-900 to-cyan-600 min-h-screen w-full max-w-none mx-auto">
 
                 <main className="p-4 max-w-6xl mx-auto flex flex-col gap-10 min-h-screen">
+                      
                       <header className="flex justify-between border-b border-white border-solid border-white-500 py-4 sm:p-6">
 
                           <Link href="/" className="flex gap-1 text-2xl font-semibold items-center">
@@ -30,15 +31,13 @@ export default function RootLayout({ children }) {
 
                           </Link>
 
-
                           <nav className="flex items-center gap-6 sm:gap:8 text-white cursor:pointer text-xl">
                               <Link className="hover:text-blue-300" href="/">Home</Link>
-                              <Link className="hover:text-blue-300" href="/">About</Link>
+                              <Link className="hover:text-blue-300 smooth-scroll" href="/#about">About</Link>
                            
                               <button class="flex items-center justify-center bg-white hover:text-blue-300 text-base sm:text-lg md:text-xl poppins relative overflow-hidden px-6 py-3 group rounded-full text-slate-950 space-x-3">
-                                  <Link className="hover:text-blue-300" href="/pricing">New+</Link>
+                                  <Link className="hover:text-blue-300" href="/">New+</Link>
                               </button>
-
                           </nav>
 
                       </header>
@@ -71,13 +70,13 @@ export default function RootLayout({ children }) {
                                      
                                  </div>
 
-                              <p className=" text-xl ">Copyright © 2024 Hamza Rashid. All rights reserved.</p>
+                              <p className="text-xl text-center justify-center flex">Copyright © 2024 Hamza Rashid. All rights reserved.</p>
+                              
                               </div>
                          </div>
                       </footer>
-                  </main>
 
-             
+                  </main>
 
           </body>
     </html>

@@ -4,6 +4,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+
 import Lottie from "lottie-react"
 import uploadAnimation from "../components/assets/uploadAnimation"
 
@@ -48,6 +49,8 @@ export default function UploadButton() {
                 <span>Upload File</span>
                 <input onChange={upload} type="file" className="hidden" />
             </label>
+
+            
 
 
             {isUploading && (
