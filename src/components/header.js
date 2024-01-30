@@ -9,7 +9,7 @@ const Header = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsSmallScreen(window.matchMedia('(max-width: 200px)').matches);
+      setIsSmallScreen(window.matchMedia('(max-width: 500px)').matches);
     };
 
     // Initial check on component mount

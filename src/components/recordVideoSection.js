@@ -162,7 +162,7 @@ export default function RecordVideoSection() {
             )}
 
             {isUploading && (
-                <div className="bg-black/80 text-white fixed inset-0 flex items-center justify-center">
+                <div className="z-50 bg-black/80 text-white fixed inset-0 flex items-center justify-center">
                     <div className="text-center flex flex-col items-center">
                         <h2 className="text-4xl mb-2">Uploading...</h2>
                         <div style={{ marginTop: '-70px' }}>

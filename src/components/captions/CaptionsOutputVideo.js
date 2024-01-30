@@ -1,17 +1,17 @@
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { toBlobURL, fetchFile } from "@ffmpeg/util";
 import { useEffect, useState, useRef } from "react";
-import roboto from '../../fonts/Roboto-Regular.ttf';
-import robotoBold from '../../fonts/Roboto-Bold.ttf';
-import noto from '../../fonts/NotoSans-Regular.ttf';
 
 
+// Load the font outside of the component function
 const CaptionsOutputVideo = ({ filename, transcriptionItems, primaryColor, outlineColor, isButtonClicked, resetButtonClicked }) => {
     const videoUrl = "https://transalte-transcribe.s3.amazonaws.com/" + filename;
+   
     const [loaded, setLoaded] = useState(false);
-    const [progress, setProgress] = useState(1);
     const ffmpegRef = useRef(new FFmpeg());
     const videoRef = useRef(null);
+   
+    const [progress, setProgress] = useState(1);
 
 
     useEffect(() => {
@@ -20,29 +20,27 @@ const CaptionsOutputVideo = ({ filename, transcriptionItems, primaryColor, outli
     }, []);
 
     useEffect(() => {
-
         if (isButtonClicked) {
-
             transcode(primaryColor, outlineColor);
             resetButtonClicked(false);
-
-        };
- 
+        }
     }, [isButtonClicked]);
 
     const load = async () => {
         const ffmpeg = ffmpegRef.current;
-        const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.2/dist/umd'
+        const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd';
+
         await ffmpeg.load({
             coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
             wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
         });
-        await ffmpeg.writeFile('/tmp/roboto.ttf', await fetchFile(roboto));
-        await ffmpeg.writeFile('/tmp/roboto-bold.ttf', await fetchFile(robotoBold));
-        await ffmpeg.writeFile('/tmp/notosans-regular.ttf', await fetchFile(noto));
+
+        // await ffmpeg.writeFile('/tmp/roboto.ttf', await fetchFile(roboto));
+        // await ffmpeg.writeFile('/tmp/roboto-bold.ttf', await fetchFile(robotoBold));
+        await ffmpeg.writeFile('/tmp/arial.ttf', await fetchFile('https://raw.githubusercontent.com/kavin808/arial.ttf/master/arial.ttf'));
 
         setLoaded(true);
-    }
+    };
 
     function secondsToHHMMSSMS(timeString) {
         const d = new Date(parseFloat(timeString) * 1000);
@@ -76,15 +74,15 @@ const CaptionsOutputVideo = ({ filename, transcriptionItems, primaryColor, outli
     }
 
     async function transcode(primaryColor, outlineColor) {
-        const ffmpeg = ffmpegRef.current;
-        const srt = transcriptionItemsToSrt(transcriptionItems);
-        await ffmpeg.writeFile(filename, await fetchFile(videoUrl));
-        await ffmpeg.writeFile('subs.srt', srt);
-        videoRef.current.src = videoUrl;
-        await new Promise((resolve, reject) => {
-            videoRef.current.onloadedmetadata = resolve;
-        });
-        const duration = videoRef.current.duration;
+         const ffmpeg = ffmpegRef.current;
+         const srt = transcriptionItemsToSrt(transcriptionItems);
+         await ffmpeg.writeFile(filename, await fetchFile(videoUrl));
+         await ffmpeg.writeFile('subs.srt', srt);
+         videoRef.current.src = videoUrl;
+         await new Promise((resolve, reject) => {
+             videoRef.current.onloadedmetadata = resolve;
+         });
+         const duration = videoRef.current.duration;
         ffmpeg.on('log', ({ message }) => {
             const regexResult = /time=([0-9:.]+)/.exec(message);
             if (regexResult && regexResult?.[1]) {
@@ -97,13 +95,14 @@ const CaptionsOutputVideo = ({ filename, transcriptionItems, primaryColor, outli
         })
         await ffmpeg.exec([
             '-ss', '0',
-            '-t', '5', 
+            '-t', '3', 
             '-i', filename,
-            '-preset', 'ultrafast',
-            '-vf', `subtitles=subs.srt:fontsdir=/tmp:force_style='Fontname=Roboto,MarginV=25,PrimaryColour=${toFFmpegColor(primaryColor)},OutlineColour=${toFFmpegColor(outlineColor)}'`,
+            '-preset', 'ultrafast',         
+            '-vf', `subtitles=subs.srt:fontsdir=/tmp:force_style='Fontname=arial,MarginV=20,PrimaryColour=${toFFmpegColor(primaryColor)},OutlineColour=${toFFmpegColor(outlineColor)}'`,
             'output.mp4'
         ]);
         const data = await ffmpeg.readFile('output.mp4');
+
         videoRef.current.src =
             URL.createObjectURL(new Blob([data.buffer], { type: 'video/mp4' }));
         setProgress(1);

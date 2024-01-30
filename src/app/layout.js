@@ -13,8 +13,6 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
 
-    // const [isMenuToggled, setIsMenuToggled] = useState(false);
-
   return (
       <html lang="en" className={inter.className}>
 
