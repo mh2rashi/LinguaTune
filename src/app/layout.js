@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
   title: 'LinguaTune: Harmonizing Speech Barriers',
-    description: 'Take your vidoes to the next level with our state of the art AI platform designed to transcribe vidoes with near-human accuracy. Add captions or voice-over in any language of your choice effortlessly.',
+    description: 'Take your videos to the next level with our state of the art AI platform designed to transcribe vidoes with near-human accuracy. Add captions or voice-over in any language of your choice effortlessly.',
 }
 
 export default function RootLayout({ children }) {

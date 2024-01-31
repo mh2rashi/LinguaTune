@@ -140,7 +140,7 @@ export default function FilePage({ params }) {
 
     const updateAudioFile = (file) => {
         setAudioFile(file);
-        console.log(audioFile);
+        console.log("Audio File:", audioFile);
 
     }
 

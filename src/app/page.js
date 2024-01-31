@@ -1,6 +1,6 @@
 ﻿'use client'
 import DemoSection from "../components/demoSection";
-import UploadButton, { isUploading, setIsUploading } from "../components/uploadButton";
+import UploadButton from "../components/uploadButton";
 import RecordButton from "../components/recordButton";
 import DemoButton from "../components/demoButton";
 import RecordVideoSection from "../components/recordVideoSection"

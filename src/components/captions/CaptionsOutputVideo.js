@@ -95,7 +95,7 @@ const CaptionsOutputVideo = ({ filename, transcriptionItems, primaryColor, outli
         })
         await ffmpeg.exec([
             '-ss', '0',
-            '-t', '3', 
+            // '-t', '3', 
             '-i', filename,
             '-preset', 'ultrafast',         
             '-vf', `subtitles=subs.srt:fontsdir=/tmp:force_style='Fontname=arial,MarginV=20,PrimaryColour=${toFFmpegColor(primaryColor)},OutlineColour=${toFFmpegColor(outlineColor)}'`,

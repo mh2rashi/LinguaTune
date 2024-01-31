@@ -111,7 +111,7 @@ const VoiceOverOptions = ({ originalTranscriptionItems, currentTranscriptionItem
             OutputS3KeyPrefix: "",
             TextType: "ssml",
             Text: text,
-            VoiceId: selectedVoiceOver,
+            VoiceId: 'Salli',
         };
 
         try {
@@ -157,7 +157,7 @@ const VoiceOverOptions = ({ originalTranscriptionItems, currentTranscriptionItem
 
         console.log('Values:', updatedTranscriptionItems);
 
-        console.log(selectedVoiceOver);
+        console.log('Voice:',selectedVoiceOver);
 
         getVoiceOver(updatedTranscriptionItems);
 
@@ -166,7 +166,7 @@ const VoiceOverOptions = ({ originalTranscriptionItems, currentTranscriptionItem
    
     const applyVoiceOver = () => {
 
-        updateTranscriptionEdit();
+       // updateTranscriptionEdit();
         updateApplyVoiceOverClicked(true);
         
 
@@ -217,29 +217,3 @@ const VoiceOverOptions = ({ originalTranscriptionItems, currentTranscriptionItem
 
 export default VoiceOverOptions
 
-
-
-// Get Voice Over
-//async function getVoiceInfo() {
-//    const client = new PollyClient({
-//        region: "us-east-2",
-//        credentials: {
-//            accessKeyId: "AKIAZSN4PXGW7UO5YVIY",
-//            secretAccessKey: "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",
-//        },
-//    });
-
-//    const input = { // DescribeVoicesInput
-//        Engine: "standard",
-//    };
-
-//    try {
-//        const command = new DescribeVoicesCommand(input);
-//        const response = await client.send(command);
-
-//        console.log(response.Voices);
-
-//    } catch (error) {
-//        console.error("Error submitting synthesis task:", error);
-//    }
-//};
