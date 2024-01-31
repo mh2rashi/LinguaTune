@@ -41,9 +41,10 @@
 The goal of this project was to create a full-stack web application where users could upload or record a video, transcribe it, and provide subtitles or a voice-over in numerous languages. The project is split into three distinct parts:
 
 1. <strong>Upload or Record</strong>: Choose your file of choice to be transcribed by our platform.
-    <br>
+  n
     - By clicking the <strong>Upload File</strong> button, you can upload a file from your advice.
     <img src="public/images/upload.png" alt="Logo" width="full" height="full">
+
     - By clicking the <strong>Record File</strong> button, your device might prompt you to enable the camera and microphone. After granting access, please reload the page if needed to see the video and audio working. Press the <strong>Start Recording</strong> button, and upon finishing the recording, you have the option to download your recording by pressing the <strong>Download Recording</strong> button or pressing the <strong>Upload Recording</strong> button, which takes you to the next step.
     <img src="public/images/record.png" alt="Logo" width="full" height="full">
    
@@ -51,18 +52,18 @@ The goal of this project was to create a full-stack web application where users 
 
 2. <strong>Select & Edit</strong>: Select a language for transcription and edit for complete accuracy. There is a transcription for Captions and Voice Over, click the one that you'd like to edit.
 
-- <strong>Captions</strong>:
-    1. Select the appropriate language for your transcription (01).
-    2. Choose the primary and outline color for your subtitles (02).
-    3. Modify the transcription in the content section.
-    4. Click the <strong>Apply Captions</strong> button, wait for the subtitles to be applied, and view the video for the results.
+    - <strong>Captions</strong>:
+        1. Select the appropriate language for your transcription (01).
+        2. Choose the primary and outline color for your subtitles (02).
+        3. Modify the transcription in the content section.
+        4. Click the <strong>Apply Captions</strong> button, wait for the subtitles to be applied, and view the video for the results.
 
-<img src="public/images/captions.png" alt="Logo" width="full" height="full">
+    <img src="public/images/captions.png" alt="Logo" width="full" height="full">
 
 - <strong>Voice Over</strong>:
     1. Select the appropriate language, gender and person for your transcription (01).
     3. Modify the transcription in the content section.
-    4. Click the <strong>Apply Voice Over (Currently in progress)</strong> button, wait for the voice over to be applied, and view the video for the results.
+    4. Click the <strong>Apply Voice Over</strong> button (Currently in progress), wait for the voice over to be applied, and view the video for the results.
 
 <img src="public/images/voiceover.png" alt="Logo" width="full" height="full">
 

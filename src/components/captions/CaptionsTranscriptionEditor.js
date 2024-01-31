@@ -1,19 +1,8 @@
 import React, { useState, useEffect } from "react";
 
-
 const CaptionsTranscriptionEditor = ({ uniqueKeyCaptions, transcriptionItems }) => {
-
-    useEffect(() => {
-       
-    }, [transcriptionItems]);
-
-
     // Function 1
-    function TranscriptionItem({item, key}) {
-        if (!item) {
-            return '';
-        }
-
+    function TranscriptionItem({ item }) {
         const [startValue, setStartValue] = useState(item.start_time || '');
         const [endValue, setEndValue] = useState(item.end_time || '');
         const [contentValue, setContentValue] = useState(item.content || '');
@@ -50,43 +39,28 @@ const CaptionsTranscriptionEditor = ({ uniqueKeyCaptions, transcriptionItems }) 
                     value={contentValue}
                     onChange={handleContentChange}
                 />
-
             </div>
-
         );
     }
 
-
-
     return (
-
         <>
-
             <div className="flex-1 text-white bg-black border border-white border-solid p-2 border-2 grid grid-cols-3 gap-1 rounded-md" style={{ gridTemplateColumns: '12% 12% 76%' }}>
-
                 <h1 className="text-left border-solid border-white border-1 sm:text-lg md:text-xl">Start</h1>
                 <h1 className="text-left border-solid border-white border-1 sm:text-lg md:text-xl">End</h1>
                 <h1 className="text-center border-solid border-white border-1 sm:text-lg md:text-xl">Content</h1>
-
             </div>
-
             {transcriptionItems && (
                 <div className="flex-col">
                     {transcriptionItems.map((item, key) => (
                         <div key={key} id={key}>
-                            <TranscriptionItem
-                                item={item}
-                                key={key}
-                            />
+                            <TranscriptionItem item={item} />
                         </div>
                     ))}
                 </div>
             )}
-
         </>
-
     );
-
 };
 
-export default CaptionsTranscriptionEditor
+export default CaptionsTranscriptionEditor;

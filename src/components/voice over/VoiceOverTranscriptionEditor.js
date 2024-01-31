@@ -1,19 +1,13 @@
 import React, { useState, useEffect } from "react";
 
-
 const VoiceOverTranscriptionEditor = ({ uniqueKeyVoiceOver, transcriptionItems }) => {
-
     useEffect(() => {
 
     }, [transcriptionItems]);
 
-
     // Function 1
-    function TranscriptionItem({ item, key }) {
-        if (!item) {
-            return '';
-        }
-
+    function TranscriptionItem({ item }) {
+       
         const [startValue, setStartValue] = useState(item.start_time || '');
         const [endValue, setEndValue] = useState(item.end_time || '');
         const [contentValue, setContentValue] = useState(item.content || '');
@@ -50,43 +44,28 @@ const VoiceOverTranscriptionEditor = ({ uniqueKeyVoiceOver, transcriptionItems }
                     value={contentValue}
                     onChange={handleContentChange}
                 />
-
             </div>
-
         );
     }
 
-
-
     return (
-
         <>
-
             <div className="text-white bg-black border border-white border-solid p-2 border-2 grid grid-cols-3 gap-1 rounded-md" style={{ gridTemplateColumns: '10% 10% 80%' }}>
-
                 <h1 className="text-left border-solid border-white border-1 sm:text-lg md:text-xl">Start</h1>
                 <h1 className="text-left border-solid border-white border-1 sm:text-lg md:text-xl">End</h1>
                 <h1 className="text-center border-solid border-white border-1 sm:text-lg md:text-xl">Content</h1>
-
             </div>
-
             {transcriptionItems && (
                 <div className="flex-col">
                     {transcriptionItems.map((item, key) => (
                         <div key={key} id={key}>
-                            <TranscriptionItem
-                                item={item}
-                                key={key}
-                            />
+                            <TranscriptionItem item={item} />
                         </div>
                     ))}
                 </div>
             )}
-
         </>
-
     );
-
 };
 
-export default VoiceOverTranscriptionEditor
+export default VoiceOverTranscriptionEditor;
