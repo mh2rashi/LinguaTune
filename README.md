@@ -13,7 +13,7 @@
     Take your videos to the next level with our state of the art AI platform designed to transcribe vidoes with near-human accuracy. Add captions or voice-over in any language of your choice effortlessly.
   </p>
 
-  <a href=""><h2>Live Demo</h2></a>
+  # <a href="https://lingua-tune.vercel.app/">Live Demo</a>
 
 </div>
 
@@ -41,7 +41,7 @@
 The goal of this project was to create a full-stack web application where users could upload or record a video, transcribe it, and provide subtitles or a voice-over in numerous languages. The project is split into three distinct parts:
 
 1. <strong>Upload or Record</strong>: Choose your file of choice to be transcribed by our platform.
-  n
+  
     - By clicking the <strong>Upload File</strong> button, you can upload a file from your advice.
     <img src="public/images/upload.png" alt="Logo" width="full" height="full">
 
@@ -60,10 +60,10 @@ The goal of this project was to create a full-stack web application where users 
 
     <img src="public/images/captions.png" alt="Logo" width="full" height="full">
 
-- <strong>Voice Over</strong>:
-    1. Select the appropriate language, gender and person for your transcription (01).
-    3. Modify the transcription in the content section.
-    4. Click the <strong>Apply Voice Over</strong> button (Currently in progress), wait for the voice over to be applied, and view the video for the results.
+    - <strong>Voice Over</strong>:
+        1. Select the appropriate language, gender and person for your transcription (01).
+        3. Modify the transcription in the content section.
+        4. Click the <strong>Apply Voice Over</strong> button (Currently in progress), wait for the voice over to be applied, and view the video for the results.
 
 <img src="public/images/voiceover.png" alt="Logo" width="full" height="full">
 
@@ -127,7 +127,7 @@ Please follow instructions below to install and run the project on your local de
 
 ## Usage
 
-Please access the [Live Demo](https://stockpeer-3495602137c6.herokuapp.com/) for this project. Wait times for subtitles and voice-over to be applied to the video are subject to its length.
+Please access the [Live Demo](https://lingua-tune.vercel.app/) for this project. Wait times for subtitles and voice-over to be applied to the video are subject to its length.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -140,6 +140,7 @@ Please access the [Live Demo](https://stockpeer-3495602137c6.herokuapp.com/) for
 - Integrate features to overlay additional components onto a video, such as GIFs or memes, etc.
 - Implement features to merge videos together.
 - Add more fonts for subtitles.
+- Functionality to upload larger videos (Vercel only supports uploads less than 10 MB).
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
