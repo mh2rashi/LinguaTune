@@ -23,19 +23,19 @@ const CaptionsTranscriptionEditor = ({ uniqueKeyCaptions, transcriptionItems }) 
         };
 
         return (
-            <div className="my-1 grid grid-cols-3 gap-1 items-center" style={{ gridTemplateColumns: '12% 12% 76%' }}>
+            <div className="my-1 grid grid-cols-3 gap-1 items-center text-white/90" style={{ gridTemplateColumns: '12% 12% 76%' }}>
                 <input type="text"
-                    className="bg-white/20 p-1 rounded-md sm:text-lg md:text-xl flex"
+                    className="bg-white/10 p-1 rounded-md sm:text-lg md:text-xl flex"
                     value={startValue}
                     onChange={handleStartTimeChange}
                 />
                 <input type="text"
-                    className="bg-white/20 p-1 rounded-md sm:text-lg md:text-xl flex"
+                    className="bg-white/10 p-1 rounded-md sm:text-lg md:text-xl flex"
                     value={endValue}
                     onChange={handleEndTimeChange}
                 />
                 <input type="text"
-                    className="bg-white/20 p-1 rounded-md sm:text-lg md:text-xl"
+                    className="bg-white/10 p-1 rounded-md sm:text-lg md:text-xl"
                     value={contentValue}
                     onChange={handleContentChange}
                 />
@@ -45,10 +45,10 @@ const CaptionsTranscriptionEditor = ({ uniqueKeyCaptions, transcriptionItems }) 
 
     return (
         <>
-            <div className="flex-1 text-white bg-black border border-white border-solid p-2 border-2 grid grid-cols-3 gap-1 rounded-md" style={{ gridTemplateColumns: '12% 12% 76%' }}>
-                <h1 className="text-left border-solid border-white border-1 sm:text-lg md:text-xl">Start</h1>
-                <h1 className="text-left border-solid border-white border-1 sm:text-lg md:text-xl">End</h1>
-                <h1 className="text-center border-solid border-white border-1 sm:text-lg md:text-xl">Content</h1>
+            <div className="flex-1 text-white bg-black border border-gray-500 border-solid p-2 grid grid-cols-3 gap-1 rounded-md" style={{ gridTemplateColumns: '12% 12% 76%' }}>
+                <h1 className="text-left border-solid border-gray-300 border-1 sm:text-lg md:text-xl">Start</h1>
+                <h1 className="text-left border-solid border-gray-300 border-1 sm:text-lg md:text-xl">End</h1>
+                <h1 className="text-center border-solid border-gray-300 border-1 sm:text-lg md:text-xl">Content</h1>
             </div>
             {transcriptionItems && (
                 <div className="flex-col">

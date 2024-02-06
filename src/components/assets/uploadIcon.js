@@ -1,4 +1,4 @@
-export default function UploadIcon({ className = 'w-6 h-6' }) {
+export default function UploadIcon({ className = 'w-7 h-7' }) {
 
     return (
 

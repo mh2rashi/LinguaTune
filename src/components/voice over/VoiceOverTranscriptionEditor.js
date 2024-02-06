@@ -28,19 +28,19 @@ const VoiceOverTranscriptionEditor = ({ uniqueKeyVoiceOver, transcriptionItems }
         };
 
         return (
-            <div className="my-1 grid grid-cols-3 gap-1 items-center" style={{ gridTemplateColumns: '10% 10% 80%' }}>
+            <div className="my-1 grid grid-cols-3 gap-1 items-center text-white/90" style={{ gridTemplateColumns: '10% 10% 80%' }}>
                 <input type="text"
-                    className="bg-white/20 p-1 rounded-md sm:text-lg md:text-xl"
+                    className="bg-white/10 p-1 rounded-md sm:text-lg md:text-xl"
                     value={startValue}
                     onChange={handleStartTimeChange}
                 />
                 <input type="text"
-                    className="bg-white/20 p-1 rounded-md sm:text-lg md:text-xl"
+                    className="bg-white/10 p-1 rounded-md sm:text-lg md:text-xl"
                     value={endValue}
                     onChange={handleEndTimeChange}
                 />
                 <input type="text"
-                    className="bg-white/20 p-1 rounded-md sm:text-lg md:text-xl"
+                    className="bg-white/10 p-1 rounded-md sm:text-lg md:text-xl"
                     value={contentValue}
                     onChange={handleContentChange}
                 />
@@ -50,7 +50,7 @@ const VoiceOverTranscriptionEditor = ({ uniqueKeyVoiceOver, transcriptionItems }
 
     return (
         <>
-            <div className="text-white bg-black border border-white border-solid p-2 border-2 grid grid-cols-3 gap-1 rounded-md" style={{ gridTemplateColumns: '10% 10% 80%' }}>
+            <div className="text-white bg-black border border-gray-500 border-solid p-2  grid grid-cols-3 gap-1 rounded-md" style={{ gridTemplateColumns: '10% 10% 80%' }}>
                 <h1 className="text-left border-solid border-white border-1 sm:text-lg md:text-xl">Start</h1>
                 <h1 className="text-left border-solid border-white border-1 sm:text-lg md:text-xl">End</h1>
                 <h1 className="text-center border-solid border-white border-1 sm:text-lg md:text-xl">Content</h1>

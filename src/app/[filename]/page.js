@@ -158,7 +158,7 @@ export default function FilePage({ params }) {
         return (
 
             <div className="text-center flex flex-col items-center">
-                <Lottie animationData={transcribeAnimation} />
+                <Lottie animationData={transcribeAnimation}/>
             </div>
 
         );

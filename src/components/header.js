@@ -38,7 +38,7 @@ const Header = () => {
     <header className="flex justify-between border-b border-white border-solid border-white-500 py-4 sm:p-6 relative z-10">
       <Link href="/" className="flex gap-1 text-2xl font-semibold items-center" onClick={handleLogoClick}>
         < LogoIcon />
-        <div>Lingua<span className="text-blue-300">Tune</span></div>
+        <div className="text-white">Lingua<span className="text-blue-300">Tune</span></div>
       </Link>
 
       {isSmallScreen ? (
@@ -52,10 +52,10 @@ const Header = () => {
             <div className="fixed top-0 right-0 h-screen w-1/4 bg-gray-900 flex flex-col z-50">
               <div className="flex justify-end p-4">
                 <button onClick={() => setIsMenuToggled(false)} className="focus:outline-none">
-                  <span className="text-white text-4xl">×</span> {/* Close button */}
+                  <span className="hover:text-blue-300 text-white text-4xl">×</span> {/* Close button */}
                 </button>
               </div>
-              <div className="flex flex-col p-4 gap-2 z-50">
+              <div className="flex flex-col p-4 gap-2 z-50 text-white">
                 <Link className="hover:text-blue-300 text-2xl" href="/" onClick={handleMenuItemClick}>Home</Link>
                 <Link className="hover:text-blue-300 smooth-scroll text-2xl" href="/#about" onClick={handleMenuItemClick}>About</Link>
                 <Link className="hover:text-blue-300 text-2xl" href="/" onClick={handleMenuItemClick}>New+</Link>
@@ -68,7 +68,7 @@ const Header = () => {
           <Link className="hover:text-blue-300" href="/">Home</Link>
           <Link className="hover:text-blue-300 smooth-scroll" href="/#about">About</Link>
                            
-            <button class="flex items-center justify-center bg-white hover:text-blue-300 text-base sm:text-lg md:text-xl poppins relative overflow-hidden px-6 py-3 group rounded-full text-slate-950 space-x-3">
+            <button class="flex items-center justify-center bg-black hover:text-blue-300 text-base sm:text-lg md:text-xl poppins relative overflow-hidden px-6 py-3 group rounded-full text-slate-950 space-x-3 text-white">
                 <Link className="hover:text-blue-300" href="/">New+</Link>
             </button>
         </nav>

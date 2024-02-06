@@ -10,7 +10,7 @@
 <h2 align="center">LinguaTune: Harmonizing Speech Barriers</h3>
 
   <p align="center">
-    Take your videos to the next level with our state of the art AI platform designed to transcribe vidoes with near-human accuracy. Add captions or voice-over in any language of your choice effortlessly.
+    Take your videos to the next level with our state-of-the-art AI platform designed to transcribe videos with near-human accuracy. Add captions or voice-over in any language of your choice effortlessly.
   </p>
 
   # <a href="https://lingua-tune.vercel.app/">Live Demo</a>
@@ -50,7 +50,7 @@ The goal of this project was to create a full-stack web application where users 
    
 
 
-2. <strong>Select & Edit</strong>: Select a language for transcription and edit for complete accuracy. There is a transcription for Captions and Voice Over, click the one that you'd like to edit.
+2. <strong>Select & Edit</strong>: Select a language for transcription and edit for complete accuracy. There is a transcription for Captions and Voice-Over, click the one that you'd like to edit.
 
     - <strong>Captions</strong>:
         1. Select the appropriate language for your transcription (01).
@@ -60,10 +60,10 @@ The goal of this project was to create a full-stack web application where users 
 
     <img src="public/images/captions.png" alt="Logo" width="full" height="full">
 
-    - <strong>Voice Over</strong>:
+    - <strong>Voice-Over</strong>:
         1. Select the appropriate language, gender and person for your transcription (01).
         3. Modify the transcription in the content section.
-        4. Click the <strong>Apply Voice Over</strong> button (Currently in progress), wait for the voice over to be applied, and view the video for the results.
+        4. Click the <strong>Apply Voice-Over</strong> button (currently in progress), wait for the voice-over to be applied, and view the video for the results.
 
 <img src="public/images/voiceover.png" alt="Logo" width="full" height="full">
 
@@ -78,7 +78,7 @@ The goal of this project was to create a full-stack web application where users 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- TECHNOLOGIES -->
-### Major Technologies Used
+## Major Technologies Used
 
 [![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=white)](https://reactjs.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
@@ -96,7 +96,7 @@ The goal of this project was to create a full-stack web application where users 
 
 ## Installation
 
-Please follow instructions below to install and run the project on your local device.
+Please follow the instructions.
 
 
 1. Clone the repository.
@@ -112,9 +112,9 @@ Please follow instructions below to install and run the project on your local de
 
 4. Enter the following information in the `.env` file.
     ```sh
-    AWS_ACCESS_KEY = "Enter key here"
-    AWS_SECRET_ACCESS_KEY = "Enter key here"
-    BUCKET_NAME = "Enter key here"
+    AWS_ACCESS_KEY = "Enter value"
+    AWS_SECRET_ACCESS_KEY = "Enter value"
+    BUCKET_NAME = "Enter value"
     ```
   
 5. Run the the development server on your local machine.

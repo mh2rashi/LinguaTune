@@ -114,7 +114,7 @@ export default function RecordVideoSection() {
             {videoParts.current.length === 0 && !recording && (
                 <label
                     onClick={startRecording}
-                    className="cursor-pointer inline-flex items-center justify-center bg-white hover:text-blue-300 text-base sm:text-lg md:text-xl poppins relative overflow-hidden px-5 py-3 group rounded-full text-slate-950 space-x-3"
+                    className="cursor-pointer inline-flex items-center justify-center bg-black hover:text-blue-300 hover:fill-blue-300 fill-white text-base sm:text-lg md:text-xl poppins relative overflow-hidden px-5 py-3 group rounded-full text-slate-950 space-x-3 text-white"
                 >
                     <VideoIcon />
                     <span>Start Recording</span>
@@ -124,7 +124,7 @@ export default function RecordVideoSection() {
             {recording && (
                 <label
                     onClick={stopRecording}
-                    className="cursor-pointer inline-flex items-center justify-center bg-white hover:text-blue-300 text-base sm:text-lg md:text-xl poppins relative overflow-hidden px-5 py-3 group rounded-full text-slate-950 space-x-3"
+                    className="cursor-pointer inline-flex items-center justify-center bg-black hover:text-blue-300 hover:fill-blue-300 fill-white text-base sm:text-lg md:text-xl poppins relative overflow-hidden px-5 py-3 group rounded-full text-slate-950 space-x-3 text-white"
                 >
                     <NoVideoIcon />
                     <span>{`Stop Recording: ${timer}s`}</span>
@@ -135,7 +135,7 @@ export default function RecordVideoSection() {
                 <div className="flex flex-col items-center justify-between">
                     <label
                         onClick={startRecording}
-                        className="cursor-pointer inline-flex items-center justify-center bg-white hover:text-blue-300 text-base sm:text-lg md:text-xl poppins relative overflow-hidden px-5 py-3 group rounded-full text-slate-950 space-x-3 mb-2"
+                        className="cursor-pointer inline-flex items-center justify-center bg-black hover:text-blue-300 hover:fill-blue-300 fill-white text-base sm:text-lg md:text-xl poppins relative overflow-hidden px-5 py-3 group rounded-full text-slate-950 space-x-3 mb-2 text-white"
                     >
                         <VideoIcon />
                         <span>Start Recording</span>
@@ -143,7 +143,7 @@ export default function RecordVideoSection() {
 
                     <label
                         onClick={uploadVideo}
-                        className="cursor-pointer inline-flex items-center justify-center bg-white hover:text-blue-300 text-base sm:text-lg md:text-xl poppins relative overflow-hidden px-5 py-3 group rounded-full text-slate-950 space-x-3 mb-2"
+                        className="cursor-pointer inline-flex items-center justify-center bg-black hover:text-blue-300 hover:fill-blue-300 fill-white text-base sm:text-lg md:text-xl poppins relative overflow-hidden px-5 py-3 group rounded-full text-slate-950 space-x-3 mb-2 text-white"
                     >
                         <UploadIcon />
                         <span>Upload Recording</span>
@@ -152,9 +152,9 @@ export default function RecordVideoSection() {
 
                     <label
                         onClick={downloadVideo}
-                        className="cursor-pointer inline-flex items-center justify-center bg-white hover:text-blue-300 text-base sm:text-lg md:text-xl poppins relative overflow-hidden px-5 py-3 group rounded-full text-slate-950 space-x-3"
+                        className="cursor-pointer inline-flex items-center justify-center bg-black hover:text-blue-300 hover:fill-blue-300 fill-white text-base sm:text-lg md:text-xl poppins relative overflow-hidden px-5 py-3 group rounded-full text-slate-950 space-x-3 text-white"
                     >
-                        <DownloadIcon/>
+                        <DownloadIcon height="20px" />
                         <span>Download Recording</span>
                     </label>
 
