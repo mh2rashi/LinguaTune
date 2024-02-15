@@ -1,24 +1,39 @@
+/**
+ * The below code is a React component that renders a video with captions based on a given
+ * transcription.
+ * @returns The component `CaptionsOutputVideo` is being returned.
+**/
+
+// Import FFmpeg and related utilities
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { toBlobURL, fetchFile } from "@ffmpeg/util";
+
+// Import React hooks
 import { useEffect, useState, useRef } from "react";
 
+// Import transcription helpers
+import { transcriptionItemsToSrt, toFFmpegColor } from "../../app/api/transcription/transcriptionHelpers";
 
-// Load the font outside of the component function
+// Component to render the video with captions
 const CaptionsOutputVideo = ({ filename, transcriptionItems, primaryColor, outlineColor, isButtonClicked, resetButtonClicked }) => {
-    const videoUrl = "https://transalte-transcribe.s3.amazonaws.com/" + filename;
-   
+    // Construct the URL of the video
+    const videoUrl = "https://" + process.env.BUCKET_NAME + ".s3.amazonaws.com/" + filename;
+
+    // States to manage component loading and progress
     const [loaded, setLoaded] = useState(false);
-    const ffmpegRef = useRef(new FFmpeg());
-    const videoRef = useRef(null);
-   
     const [progress, setProgress] = useState(1);
 
+    // Refs to store the FFmpeg instance and the video element
+    const ffmpegRef = useRef(new FFmpeg());
+    const videoRef = useRef(null);
 
+    // Load FFmpeg and required files on component mount
     useEffect(() => {
         videoRef.current.src = videoUrl;
-        load();
+        loadFFmpeg();
     }, []);
 
+    // Transcode video when the button is clicked
     useEffect(() => {
         if (isButtonClicked) {
             transcode(primaryColor, outlineColor);
@@ -26,63 +41,40 @@ const CaptionsOutputVideo = ({ filename, transcriptionItems, primaryColor, outli
         }
     }, [isButtonClicked]);
 
-    const load = async () => {
+    // Load FFmpeg and required font files
+    const loadFFmpeg = async () => {
         const ffmpeg = ffmpegRef.current;
         const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd';
 
+        // Load FFmpeg core and WASM files
         await ffmpeg.load({
             coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
             wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
         });
 
-        // await ffmpeg.writeFile('/tmp/roboto.ttf', await fetchFile(roboto));
-        // await ffmpeg.writeFile('/tmp/roboto-bold.ttf', await fetchFile(robotoBold));
+        // Load custom font file
         await ffmpeg.writeFile('/tmp/arial.ttf', await fetchFile('https://raw.githubusercontent.com/kavin808/arial.ttf/master/arial.ttf'));
 
         setLoaded(true);
     };
 
-    function secondsToHHMMSSMS(timeString) {
-        const d = new Date(parseFloat(timeString) * 1000);
-        return d.toISOString().slice(11, 23).replace('.', ',');
-    }
-
-    function transcriptionItemsToSrt(items) {
-        let srt = '';
-        let i = 1;
-        items.filter(item => !!item).forEach(item => {
-            // seq
-            srt += i + "\n";
-            // timestamps
-            const { start_time, end_time } = item; // 52.345
-            srt += secondsToHHMMSSMS(start_time)
-                + ' --> '
-                + secondsToHHMMSSMS(end_time)
-                + "\n";
-
-            // content
-            srt += item.content + "\n";
-            srt += "\n";
-            i++;
-        });
-        return srt;
-    }
-
-    function toFFmpegColor(rgb) {
-        const bgr = rgb.slice(5, 7) + rgb.slice(3, 5) + rgb.slice(1, 3);
-        return '&H' + bgr + '&';
-    }
-
+    // Transcode video and add captions
     async function transcode(primaryColor, outlineColor) {
-         const ffmpeg = ffmpegRef.current;
-         const srt = transcriptionItemsToSrt(transcriptionItems);
-         await ffmpeg.writeFile(filename, await fetchFile(videoUrl));
-         await ffmpeg.writeFile('subs.srt', srt);
-         videoRef.current.src = videoUrl;
-         await new Promise((resolve, reject) => {
-             videoRef.current.onloadedmetadata = resolve;
-         });
-         const duration = videoRef.current.duration;
+        const ffmpeg = ffmpegRef.current;
+        const srt = transcriptionItemsToSrt(transcriptionItems);
+
+        // Write video file and subtitles file
+        await ffmpeg.writeFile(filename, await fetchFile(videoUrl));
+        await ffmpeg.writeFile('subs.srt', srt);
+
+        // Set video source and wait for metadata to be loaded
+        videoRef.current.src = videoUrl;
+        await new Promise((resolve, reject) => {
+            videoRef.current.onloadedmetadata = resolve;
+        });
+        const duration = videoRef.current.duration;
+
+        // Update progress based on FFmpeg log
         ffmpeg.on('log', ({ message }) => {
             const regexResult = /time=([0-9:.]+)/.exec(message);
             if (regexResult && regexResult?.[1]) {
@@ -92,26 +84,26 @@ const CaptionsOutputVideo = ({ filename, transcriptionItems, primaryColor, outli
                 const videoProgress = doneTotalSeconds / duration;
                 setProgress(videoProgress);
             }
-        })
+        });
+
+        // Execute FFmpeg command to add captions to the video
         await ffmpeg.exec([
             '-ss', '0',
-            // '-t', '3', 
             '-i', filename,
-            '-preset', 'ultrafast',         
+            '-preset', 'ultrafast',
             '-vf', `subtitles=subs.srt:fontsdir=/tmp:force_style='Fontname=arial,MarginV=20,PrimaryColour=${toFFmpegColor(primaryColor)},OutlineColour=${toFFmpegColor(outlineColor)}'`,
             'output.mp4'
         ]);
-        const data = await ffmpeg.readFile('output.mp4');
 
-        videoRef.current.src =
-            URL.createObjectURL(new Blob([data.buffer], { type: 'video/mp4' }));
+        // Read the transcoded video file and set the video source
+        const data = await ffmpeg.readFile('output.mp4');
+        videoRef.current.src = URL.createObjectURL(new Blob([data.buffer], { type: 'video/mp4' }));
+
+        // Reset progress to 100%
         setProgress(1);
     }
 
-    
-
     return (
-         
         <div className="bg-gray-800 rounded-xl shadow-md shadow-cyan-500 flex-1  overflow-hidden relative">
             {progress && progress < 1 && (
                 <div className="absolute inset-0 bg-black/80 flex items-center">
@@ -134,17 +126,14 @@ const CaptionsOutputVideo = ({ filename, transcriptionItems, primaryColor, outli
                 ref={videoRef}
                 controls
                 style={{
-                    maxWidth: '100%', // Set maximum width to 100%
-                    maxHeight: '100%', // Set maximum height to 100%
-                    width: '100%', // Take the full available width within the div
-                    height: '100%', // Take the full available height within the div
+                    maxWidth: '100%',
+                    maxHeight: '100%',
+                    width: '100%',
+                    height: '100%',
                 }}
             ></video>
         </div>
-
-
     );
-
 };
 
-export default CaptionsOutputVideo
+export default CaptionsOutputVideo;

@@ -1,14 +1,25 @@
+/**
+ * The `VoiceOverLanguageDropDown` component is a dropdown menu that allows users to select a language,
+ * gender, and voice for a voice-over feature.
+ * @returns The component is returning a dropdown menu for selecting a voiceover language, gender, and
+ * voice. The selected language, gender, and voice are displayed in separate buttons. When the buttons
+ * are clicked, the corresponding dropdown options are displayed. The selected options are stored in
+ * state variables and passed to the parent component through callback functions.
+**/
+
+// React imports
 import React, { useState, useEffect, useRef } from 'react';
 
 const VoiceOverLanguageDropDown = ({ selectedLanguageCode, selectedVoiceOver }) => {
+    // State variables to manage dropdown visibility and selections
     const [isOpenLanguage, setIsOpenLanguage] = useState(false);
     const [isOpenGender, setIsOpenGender] = useState(false);
     const [isOpenVoice, setIsOpenVoice] = useState(false);
-
     const [selectedLanguage, setSelectedLanguage] = useState("US English");
     const [selectedGender, setSelectedGender] = useState("Male");
     const [selectedVoice, setSelectedVoice] = useState("Justin");
 
+    // Ref to detect clicks outside dropdown
     const dropdownRef = useRef(null);
 
     const languageNames = [
@@ -153,37 +164,38 @@ const VoiceOverLanguageDropDown = ({ selectedLanguageCode, selectedVoiceOver }) 
     };
     
     const languageCodes = {
-        "Turkish": "tr",
-        "Swedish": "sv",
-        "Russian": "ru",
-        "Romanian": "ro",
-        "Portuguese": "pt",
-        "Brazilian Portuguese": "pt",
-        "Polish": "pl",
-        "Dutch": "nl",
-        "Norwegian": "nb",
-        "Korean": "ko",
-        "Japanese": "ja",
-        "Italian": "it",
-        "Icelandic": "is",
-        "French": "fr",
-        "Canadian French": "fr",
-        "US Spanish": "es",
-        "Mexican Spanish": "es",
-        "Castilian Spanish": "es",
-        "Welsh English": "en",
-        "US English": "en",
-        "Indian English": "en",
-        "British English": "en",
-        "Australian English": "en",
-        "German": "de",
-        "Danish": "da",
-        "Welsh": "cy",
-        "Chinese Mandarin": "cmn",
+        "Turkish": "tr-TR",
+        "Swedish": "sv-SE",
+        "Russian": "ru-RU",
+        "Romanian": "ro-RO",
+        "Portuguese": "pt-PT",
+        "Brazilian Portuguese": "pt-BR",
+        "Polish": "pl-PL",
+        "Dutch": "nl-NL",
+        "Norwegian": "nb-NO",
+        "Korean": "ko-KR",
+        "Japanese": "ja-JP",
+        "Italian": "it-IT",
+        "Icelandic": "is-IS",
+        "French": "fr-FR",
+        "Canadian French": "fr-CA",
+        "US Spanish": "es-US",
+        "Mexican Spanish": "es-MX",
+        "Castilian Spanish": "es-ES",
+        "Welsh English": "en-GB-WLS",
+        "US English": "en-US",
+        "Indian English": "en-IN",
+        "British English": "en-GB",
+        "Australian English": "en-AU",
+        "German": "de-DE",
+        "Danish": "da-DK",
+        "Welsh": "cy-GB",
+        "Chinese Mandarin": "cmn-CN",
         "Arabic": "arb"
     };
     
 
+    // Effect to close dropdowns when clicked outside
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -194,84 +206,72 @@ const VoiceOverLanguageDropDown = ({ selectedLanguageCode, selectedVoiceOver }) 
         };
 
         document.addEventListener('mousedown', handleClickOutside);
-
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [dropdownRef]);
 
-
+    // Function to handle language selection
     const handleLanguageClick = (language) => {
-
-        // Close all other dropdown menus
         setIsOpenLanguage(false);
         setIsOpenGender(false);
         setIsOpenVoice(false);
 
-        // Reset gender and voice selections when language changes
         setSelectedLanguage(language);
-        setSelectedGender(LanguageGenders[language][0]);
-        setSelectedVoice(LanguageVoices[language][selectedGender][0]);
-
-        selectedLanguageCode(languageCodes[language]);
-        selectedVoiceOver(LanguageVoices[language][selectedGender][0])
+        setSelectedGender(LanguageGenders[language][0]); // Set default gender
+        setSelectedVoice(LanguageVoices[language][LanguageGenders[language][0]][0]); // Set default voice
+        
+        selectedLanguageCode(languageCodes[language]); // Pass selected language code
+        selectedVoiceOver(LanguageVoices[language][LanguageGenders[language][0]][0]); // Pass selected voice
     };
 
+    // Function to handle gender selection
     const handleGenderClick = (gender) => {
-
-        // Close all other dropdown menus
         setIsOpenLanguage(false);
         setIsOpenGender(false);
         setIsOpenVoice(false);
 
-
-        // Set selected gender
         setSelectedGender(gender);
+        setSelectedVoice(LanguageVoices[selectedLanguage][gender][0]); // Set default voice
 
-        // Outputs
-        selectedVoiceOver(LanguageVoices[selectedLanguage][gender][0]);
+
+        selectedVoiceOver(LanguageVoices[selectedLanguage][gender][0]); // Pass selected voice
     };
 
+    // Function to handle voice selection
     const handleVoiceClick = (voice) => {
-
-        // Close all other languages
         setIsOpenLanguage(false);
         setIsOpenGender(false);
         setIsOpenVoice(false);
 
+        setSelectedVoice(voice); // Pass selected voice
 
-        // Set selected voice
-        setSelectedVoice(voice);
-
-        // Outputs
         selectedVoiceOver(voice);
     };
-    
 
+    // Render dropdown
     return (
         <div ref={dropdownRef} className="relative mt-3">
-
-            {/* Language */}
+            {/* Language Dropdown */}
             <button
                 onClick={() => setIsOpenLanguage((prev) => !prev)}
                 className="bg-black text-blue-300 p-2 w-full flex items-center justify-between font-bold text-lg rounded-lg tracking-wider border-4 border-transparent active:border-white duration-100 active:text-white mb-2" // Add relative positioning
             >
                 {selectedLanguage ? (
-                    <div className="flex flex-col items-start">
-                        <span className="font-bold">{selectedLanguage}</span>
-                    </div>
+                    <span>{selectedLanguage}</span>
                 ) : (
                     'Language'
                 )}
             </button>
 
+            {/* Language Options */}
             {isOpenLanguage && (
                 <div className="absolute top-full left-0 bg-black text-white flex flex-col items-start rounded-lg p-2 w-full z-10 max-h-56 overflow-y-auto scrollbar-thin scrollbar-thumb-white-500 scrollbar-track-white-800 relative">
                     {languageNames.map((language, index) => (
                         <div
                             key={index}
                             onClick={() => handleLanguageClick(language)}
-                            className="flex p-2 w-full justify-between hover:bg-blue-300 cursor-pointer rounded-r-lg border-l-transparent hover:border-l-white border-l-4"
+                            className=" z-10 flex p-2 w-full justify-between hover:bg-blue-300 cursor-pointer rounded-r-lg border-l-transparent hover:border-l-white border-l-4"
                         >
                             <h3 className="">{language}</h3>
                         </div>
@@ -279,20 +279,19 @@ const VoiceOverLanguageDropDown = ({ selectedLanguageCode, selectedVoiceOver }) 
                 </div>
             )}
 
-            {/* Gender */}
+            {/* Gender Dropdown */}
             <button
                 onClick={() => setIsOpenGender((prev) => !prev)}
                 className="bg-black text-blue-300 p-2 w-full flex items-center justify-between font-bold text-lg rounded-lg tracking-wider border-4 border-transparent active:border-white duration-100 active:text-white mb-2" // Add relative positioning
             >
                 {selectedGender ? (
-                    <div className="flex flex-col items-start">
                         <span className="font-bold">{selectedGender}</span>
-                    </div>
                 ) : (
                     'Gender'
                 )}
             </button>
 
+            {/* Gender Options */}
             {isOpenGender && (
                 <div className="absolute top-full left-0 bg-black text-white flex flex-col items-start rounded-lg p-2 w-full z-10 max-h-56 overflow-y-auto scrollbar-thin scrollbar-thumb-white-500 scrollbar-track-white-800 relative">
                
@@ -308,7 +307,7 @@ const VoiceOverLanguageDropDown = ({ selectedLanguageCode, selectedVoiceOver }) 
                 </div>
             )}
 
-            {/* Voice */}
+            {/* Voice Dropdown */}
             <button
                 onClick={() => setIsOpenVoice((prev) => !prev)}
                 className="bg-black text-blue-300 p-2 w-full flex items-center justify-between font-bold text-lg rounded-lg tracking-wider border-4 border-transparent active:border-white duration-100 active:text-white"
@@ -322,6 +321,7 @@ const VoiceOverLanguageDropDown = ({ selectedLanguageCode, selectedVoiceOver }) 
                 )}
             </button>
 
+            {/* Voice Options */}
             {isOpenVoice && (
                 <div className="absolute top-full left-0 bg-black text-white flex flex-col items-start rounded-lg p-2 w-full z-10 max-h-56 overflow-y-auto scrollbar-thin scrollbar-thumb-white-500 scrollbar-track-white-800 relative">
                     

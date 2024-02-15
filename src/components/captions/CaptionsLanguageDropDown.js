@@ -1,10 +1,25 @@
+/**
+ * The `CaptionsLanguageDropDown` component is a dropdown menu that allows users to select a language
+ * from a list of options.
+ * @returns The component is returning a dropdown menu for selecting a language. The dropdown menu
+ * consists of a button that displays the currently selected language, and when clicked, it opens a
+ * list of available languages to choose from. The selected language is displayed in the button, and
+ * when a language is selected from the dropdown menu, the selected language code is passed to the
+ * `selectedLanguageCode` prop.
+ **/
+
+// React Imports
 import React, { useState, useEffect, useRef } from 'react';
 
 const CaptionsLanguageDropDown = ({ selectedLanguageCode }) => {
+    // State for managing dropdown visibility and selected language
     const [isOpen, setIsOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState("English");
+
+    // Reference for detecting clicks outside the dropdown
     const dropdownRef = useRef(null);
 
+    // List of available languages
     const LanguageList = [
         {
             "LanguageCode": "af",
@@ -308,6 +323,7 @@ const CaptionsLanguageDropDown = ({ selectedLanguageCode }) => {
         }
     ];
 
+    // Effect to close the dropdown when clicking outside of it
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -322,6 +338,7 @@ const CaptionsLanguageDropDown = ({ selectedLanguageCode }) => {
         };
     }, [dropdownRef]);
 
+    // Function to handle language selection
     const handleOptionClick = (language) => {
         setSelectedOption(language.LanguageName);
         setIsOpen(false);
@@ -330,21 +347,22 @@ const CaptionsLanguageDropDown = ({ selectedLanguageCode }) => {
 
     return (
         <div ref={dropdownRef} className="relative mt-3">
+            {/* Dropdown button */}
             <button
                 onClick={() => setIsOpen((prev) => !prev)}
                 className="bg-black text-blue-300 p-2 w-full flex items-center justify-between font-bold text-lg rounded-lg tracking-wider border-4 border-transparent active:border-white duration-100 active:text-white"
             >
                 {selectedOption ? (
-                    <div className="flex flex-col items-start">
-                        <span className="font-bold">{selectedOption}</span>
-                    </div>
+                    <span className="font-bold">{selectedOption}</span>
                 ) : (
                     'Dropdown'
                 )}
             </button>
 
+            {/* Dropdown menu */}
             {isOpen && (
                 <div className="absolute top-full left-0 bg-black text-white flex flex-col items-start rounded-lg p-2 w-full z-10 max-h-56 overflow-y-auto scrollbar-thin scrollbar-thumb-white-500 scrollbar-track-white-800">
+                    {/* Mapping through language list to render language options */}
                     {LanguageList.map((language, index) => (
                         <div
                             key={index}
