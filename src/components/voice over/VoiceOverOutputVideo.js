@@ -7,7 +7,7 @@ import { createFFmpeg } from '@ffmpeg/ffmpeg';
 
 const VoiceOverOutputVideo = ({ filename, audioFile, isApplyVoiceOverClicked, resetApplyVoiceOverClicked }) => {
     const videoUrl = "https://" + process.env.BUCKET_NAME + ".s3.us-east-2.amazonaws.com/" + filename;
-    //const mp3Url = "https://" + process.env.BUCKET_NAME + ".s3.us-east-2.amazonaws.com/" + audioFile;
+    const mp3Url = "https://" + process.env.BUCKET_NAME + ".s3.us-east-2.amazonaws.com/" + audioFile;
      const mp3Url = "https://transalte-transcribe.s3.us-east-2.amazonaws.com/6e13c702-e850-4269-b8b2-8efcb51d9b76.mp3";
     const [loaded, setLoaded] = useState(false);
     const [progress, setProgress] = useState(1);
